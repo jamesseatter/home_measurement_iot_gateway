@@ -33,19 +33,11 @@ public class Measurement extends BaseEntity {
     @Column(name = "sensorId")
     private Long sensorId;
 
-    @Column(name = "sensorType")
-    private String sensorType;
-
-    @Column(name = "measurementType")
-    private String measurementType;
-
     @Builder
     public Measurement(Long id, LocalDateTime measurementTime, Double value, Long sensorId, String sensorType, String measurementType) {
         super(id);
         this.measurementTime = measurementTime;
         this.value = value;
         this.sensorId = sensorId;
-        this.sensorType = sensorType;
-        this.measurementType = measurementType;
     }
 }
