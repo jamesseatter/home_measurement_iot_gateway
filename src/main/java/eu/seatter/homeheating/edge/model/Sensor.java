@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "measurement")
-public class SensorList extends BaseEntity {
+@Table(name = "sensor")
+public class Sensor extends BaseEntity {
 
     @Column(name = "sensorType")
     private String sensorType;
