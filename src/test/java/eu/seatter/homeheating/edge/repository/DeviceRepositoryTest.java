@@ -1,13 +1,16 @@
 package eu.seatter.homeheating.edge.repository;
 
 import eu.seatter.homeheating.edge.model.Device;
-import org.junit.Before;
+import eu.seatter.homeheating.edge.model.Sensor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,7 +62,28 @@ public class DeviceRepositoryTest {
 
         //then
         assertThat(found.getId()).isEqualTo(device.getId());
+    }
 
+    @Test
+    public void whenPersistWithSensors_thenReturnDevicewithSensors() {
+        //given
 
+        Sensor sensor = new Sensor();
+        sensor.setSensorType("ONEWIRE");
+        Set<Sensor> sensorList= new HashSet<>();
+        sensorList.add(sensor);
+
+        Device device = new Device();
+        device.setName("pi3n1");
+        device.setSensors(sensorList);
+
+        entityManager.persist(device);
+        entityManager.flush();
+
+        //when
+        Device found = deviceRepository.findById(device.getId()).orElse(new Device());
+
+        //then
+        assertThat(found.getSensors().size()).isEqualTo(1);
     }
 }

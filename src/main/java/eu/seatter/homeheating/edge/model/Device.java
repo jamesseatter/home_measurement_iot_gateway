@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,4 +32,7 @@ public class Device extends BaseEntity {
 
     @Column(name = "operatingsystem")
     private String operatingSystem;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
+    private Set<Sensor> sensors = new HashSet<>();
 }
