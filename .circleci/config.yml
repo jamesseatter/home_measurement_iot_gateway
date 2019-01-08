@@ -39,3 +39,19 @@ jobs:
 
       # run tests!
       - run: mvn integration-test
+
+      - run :
+          name: find XML report files
+          command: |
+            find . -type f -regex ".*/target/surefire-reports/.*xml"
+
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/junit
+      - store_artifacts:
+          path: ~/junit

@@ -80,4 +80,9 @@
 		</plugins>
 	</build>
 
+	<scm>
+		<developerConnection>scm:git:https://github.com/jamesseatter/home_heating_iot_edge.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
 </project>
