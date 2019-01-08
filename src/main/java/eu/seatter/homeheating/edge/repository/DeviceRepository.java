@@ -10,4 +10,5 @@ import org.springframework.data.repository.CrudRepository;
  * Time: 13:44
  */
 public interface DeviceRepository extends CrudRepository<Device, Long> {
+    Device findByName(String name);
 }
