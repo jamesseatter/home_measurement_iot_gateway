@@ -1,4 +1,7 @@
 # home_heating_iot_edge
+
+[![CircleCI](https://circleci.com/gh/jamesseatter/home_heating_iot_edge.svg?style=svg)](https://circleci.com/gh/jamesseatter/home_heating_iot_edge)
+
 Home Heating IOT Edge connection written in Java
 
 The project is focused on building a system to monitor the heat of the water entering the house that provides the hot water for taps and the heating system The hot water is provided by a central system for a number of houses and it fails to often. Whats more the system has no monitoring so everyone finds out when the shower in the morning :(
