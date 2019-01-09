@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,18 +23,24 @@ import java.util.Set;
 @Table(name = "device")
 public class Device extends BaseEntity {
 
+    @NotNull
+    @Size(max = 30)
     @Column(name = "name")
     private String name;
 
+    @NotNull
+    @Size(max = 50)
     @Column(name = "serialno")
     private String serialNo;
 
+    @NotNull
+    @Size(max = 50)
     @Column(name = "manufacturer")
     private String manufacturer;
 
+    @NotNull
+    @Size(max = 50)
     @Column(name = "operatingsystem")
     private String operatingSystem;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "device")
-    private Set<Sensor> sensors = new HashSet<>();
 }

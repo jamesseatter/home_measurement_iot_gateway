@@ -1,5 +1,6 @@
 package eu.seatter.homeheating.edge.repository;
 
+import eu.seatter.homeheating.edge.model.Device;
 import eu.seatter.homeheating.edge.model.Sensor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,8 +30,15 @@ public class SensorRepositoryTest {
     @Test
     public void whenFindById_thenReturnSensor() {
         //given
+        Device device = new Device();
+        device.setName("Dev1");
+        device.setManufacturer("Pi");
+        entityManager.persist(device);
+        entityManager.flush();
+
         Sensor sensor = new Sensor();
         sensor.setSensorType("OneWire");
+        sensor.setDevice(device);
         entityManager.persist(sensor);
         entityManager.flush();
 

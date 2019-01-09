@@ -1,13 +1,13 @@
 package eu.seatter.homeheating.edge.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 /**
@@ -23,26 +23,36 @@ import java.time.LocalDateTime;
 @Table(name = "sensor")
 public class Sensor extends BaseEntity {
 
+    @NotNull
+    @Size(max = 30)
     @Column(name = "sensorType")
     private String sensorType;
 
+    @NotNull
+    @Size(max = 30)
     @Column(name = "valueType")
     private String valueType;  // for example, Temperature, Humidity
 
+    @NotNull
+    @Size(max = 30)
     @Column(name = "valueUnit")
     private String valueUnit;  // for example, Centigrade
 
+    @NotNull
     @Column(name = "dataAdded")  // when the sensor is added update this field, UTC value.
     private LocalDateTime dateAdded;
 
+    @NotNull
     @Column(name = "dataModified")  // each time the sensor record is altered update this field, UTC value.
     private LocalDateTime dateModified;
 
+    @NotNull
     @Column(name = "active")    // True - sensor is in active use
     private Boolean active;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "device_id", nullable = false)
+    @JsonIgnore
     private Device device;
-
 
 }

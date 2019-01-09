@@ -1,14 +1,13 @@
 package eu.seatter.homeheating.edge.model;
 
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -24,20 +23,17 @@ import java.time.LocalDateTime;
 @Table(name = "measurement")
 public class Measurement extends BaseEntity {
 
+    @NotNull
     @Column(name = "measurementTime")
     private LocalDateTime measurementTime;
 
+    @NotNull
     @Column(name = "value")
     private Double value;
 
-    @Column(name = "sensorId")
-    private Long sensorId;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "sensor_id", nullable = false)
+    @JsonIgnore
+    private Sensor sensor;
 
-    @Builder
-    public Measurement(Long id, LocalDateTime measurementTime, Double value, Long sensorId, String sensorType, String measurementType) {
-        super(id);
-        this.measurementTime = measurementTime;
-        this.value = value;
-        this.sensorId = sensorId;
-    }
 }
