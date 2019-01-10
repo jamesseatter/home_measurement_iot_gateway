@@ -24,6 +24,11 @@ import java.time.LocalDateTime;
 public class Sensor extends BaseEntity {
 
     @NotNull
+    @Size(max=20)
+    @Column(name="sensorId")
+    private String sensorId;  // Unique ID for a sensor. Can be the OneWire ID or a made up unique ID.
+
+    @NotNull
     @Size(max = 30)
     @Column(name = "sensorType")
     private String sensorType;

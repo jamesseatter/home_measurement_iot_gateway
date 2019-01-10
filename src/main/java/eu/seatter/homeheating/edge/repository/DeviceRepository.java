@@ -15,17 +15,17 @@ public interface DeviceRepository extends JpaRepository<Device, Long> {
 
     /**
      * Finds device by using the device name as a search criteria.
-     * @param deviceName
+     * @param deviceName the name of the device
      * @return  A single device with the exact match of the name provided.
-     *          If no device is found, this method returns an empty list.
+     *          If no device is found, this method returns null.
      */
     Device findByName(String deviceName);
 
     /**
      * Finds single device by using the device serial number as a search criteria.
-     * @param serialNumber
+     * @param serialNumber the serial number of the device
      * @return  A single device with the exact match of the serial number provided.
-     *          If no device is found, this method returns an empty list.
+     *          If no device is found, this method returns null.
      */
     Device findBySerialNo(String serialNumber);
 }
