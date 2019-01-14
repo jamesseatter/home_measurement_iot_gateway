@@ -1,6 +1,7 @@
 package eu.seatter.homeheating.edge.repository;
 
 import eu.seatter.homeheating.edge.model.Device;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,23 @@ public class DeviceRepositoryTest {
     @Autowired
     private DeviceRepository deviceRepository;
 
+    private Device device;
+
+    @Before
+    public void setup() {
+        //given
+        device = new Device();
+        device.setName("Dev1");
+        device.setManufacturer("Pi");
+        device.setSerialNo("12345");
+        device.setOperatingSystem("Raspberian");
+        entityManager.persist(device);
+        entityManager.flush();
+    }
+
     @Test
     public void whenFindByName_thenReturnDevice() {
         //given
-        Device device = new Device();
-        device.setName("pi3n1");
-
-        entityManager.persist(device);
-        entityManager.flush();
 
         //when
         Device found = deviceRepository.findByName(device.getName());
@@ -47,11 +57,6 @@ public class DeviceRepositoryTest {
     @Test
     public void whenFindById_thenReturnDevice() {
         //given
-        Device device = new Device();
-        device.setName("pi3n1");
-
-        entityManager.persist(device);
-        entityManager.flush();
 
         //when
         Device found = deviceRepository.findById(device.getId()).orElse(new Device());

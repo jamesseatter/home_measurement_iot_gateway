@@ -7,9 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,18 +20,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Time: 09:20
  */
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class DeviceServiceImplTest {
 
-    @TestConfiguration
-    static class DeviceServiceImplTestContextConfiguration {
-        @Bean
-        public DeviceService deviceService() {
-            return new DeviceServiceImpl();
-        }
-    }
+//    @TestConfiguration
+//    static class DeviceServiceImplTestContextConfiguration {
+//        @Bean
+//        public DeviceService deviceService() {
+//            return new DeviceServiceImpl();
+//        }
+//    }
 
     @Autowired
-    private DeviceService deviceService;
+    private DeviceServiceImpl deviceService;
 
     @MockBean
     private DeviceRepository deviceRepository;

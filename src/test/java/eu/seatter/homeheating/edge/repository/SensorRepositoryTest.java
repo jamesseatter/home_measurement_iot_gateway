@@ -2,12 +2,16 @@ package eu.seatter.homeheating.edge.repository;
 
 import eu.seatter.homeheating.edge.model.Device;
 import eu.seatter.homeheating.edge.model.Sensor;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,20 +31,36 @@ public class SensorRepositoryTest {
     @Autowired
     private SensorRepository sensorRepository;
 
-    @Test
-    public void whenFindById_thenReturnSensor() {
-        //given
-        Device device = new Device();
+    private Device device;
+    private Sensor sensor;
+
+    @Before
+    public void setup() {
+        device = new Device();
         device.setName("Dev1");
         device.setManufacturer("Pi");
+        device.setSerialNo("12345");
+        device.setOperatingSystem("Raspberian");
         entityManager.persist(device);
         entityManager.flush();
 
-        Sensor sensor = new Sensor();
+        sensor = new Sensor();
+        sensor.setSensorId("id_1");
         sensor.setSensorType("OneWire");
         sensor.setDevice(device);
+        sensor.setValueUnit("CENTIGRADE");
+        sensor.setValueType("TEMPERATURE");
+        sensor.setDateAdded(LocalDateTime.now((ZoneOffset.UTC)));
+        sensor.setDateModified(LocalDateTime.now((ZoneOffset.UTC)));
+        sensor.setActive(true);
         entityManager.persist(sensor);
         entityManager.flush();
+    }
+
+
+    @Test
+    public void whenFindById_thenReturnSensor() {
+        //given
 
         //when
         Sensor found = sensorRepository.findById(sensor.getId()).orElse(new Sensor());
