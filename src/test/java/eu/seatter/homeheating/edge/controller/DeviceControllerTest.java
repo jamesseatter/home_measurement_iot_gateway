@@ -1,7 +1,7 @@
 package eu.seatter.homeheating.edge.controller;
 
 
-import eu.seatter.homeheating.edge.exceptions.DeviceNotFound;
+import eu.seatter.homeheating.edge.exceptions.DeviceNotFoundException;
 import eu.seatter.homeheating.edge.model.Device;
 import eu.seatter.homeheating.edge.service.DeviceService;
 import org.junit.Test;
@@ -24,7 +24,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * Created by IntelliJ IDEA.
@@ -44,7 +43,7 @@ public class DeviceControllerTest {
     private DeviceService deviceService;
 
     @Test
-    public void whenValidateDeviceBySerialNo_thenShouldReturnDevice() throws Exception {
+    public void whenGetDeviceBySerialNo_thenShouldReturnDeviceAsJSON() throws Exception {
         //given
         Device device = new Device();
         device.setName("Dev1");
@@ -55,9 +54,9 @@ public class DeviceControllerTest {
         given(deviceService.getDeviceBySerialNo(device.getSerialNo())).willReturn(Optional.of(device));
 
         //then
-        mockMvc.perform(get("/api/v1/device/{serialno}", device.getSerialNo()).contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/v1/device/{serialno}", device.getSerialNo()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.serialNo").value(device.getSerialNo()))
                 .andExpect(jsonPath("$.manufacturer").value(device.getManufacturer()))
                 .andExpect(jsonPath("$.name").value(device.getName()))
@@ -68,12 +67,19 @@ public class DeviceControllerTest {
     }
 
     @Test
-    public void whenValidateDeviceByBADSerialNo_thenShouldReturn404DeviceNotFound() throws Exception{
+    public void whenGetDeviceByBADSerialNo_thenShouldReturn404DeviceNotFoundAsJSON() throws Exception{
         //given
-        when(deviceService.getDeviceBySerialNo(anyString())).thenThrow(new DeviceNotFound("Device not found"));
+        String serialNo = "999999999";
+        String message = "Device with SN " + serialNo + " not found";
+        String detail = "Verify the Serial Number is correct and the device is registered with the system.";
+        when(deviceService.getDeviceBySerialNo(anyString())).thenThrow(new DeviceNotFoundException(message, detail));
 
-        this.mockMvc.perform(get("/api/v1/device/BADSERIAL"))
+        this.mockMvc.perform(get("/api/v1/device/{serialno}",999999999))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andExpect(jsonPath("$.status" ).value("NOT_FOUND"))
+                .andExpect(jsonPath("$.error_code" ).value("NOT_FOUND"))
+                .andExpect(jsonPath("$.message" ).value(message))
+                .andExpect(jsonPath("$.detail" ).value(detail));
     }
 }
