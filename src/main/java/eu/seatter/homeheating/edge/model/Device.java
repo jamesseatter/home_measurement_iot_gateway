@@ -1,8 +1,6 @@
 package eu.seatter.homeheating.edge.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,16 +17,11 @@ import javax.validation.constraints.Size;
 @Setter
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "device")
 public class Device extends BaseEntity {
-
-    public Device(@NotNull @Size(max = 30) String name, @NotNull @Size(max = 50) String serialNo, @NotNull @Size(max = 50) String manufacturer, @NotNull @Size(max = 50) String operatingSystem) {
-        this.name = name;
-        this.serialNo = serialNo;
-        this.manufacturer = manufacturer;
-        this.operatingSystem = operatingSystem;
-    }
 
     @NotNull
     @Size(max = 30)

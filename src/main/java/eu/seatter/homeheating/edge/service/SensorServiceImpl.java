@@ -16,8 +16,12 @@ import java.util.Optional;
 @Service
 public class SensorServiceImpl implements SensorService {
 
+    private final SensorRepository repository;
+
     @Autowired
-    private SensorRepository repository;
+    public SensorServiceImpl(SensorRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Optional<Sensor> getSensorBySensorId(String sensorId) {

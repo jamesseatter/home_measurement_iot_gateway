@@ -46,7 +46,7 @@ public class DeviceRepositoryTest {
         //given
 
         //when
-        Device found = deviceRepository.findByName(device.getName());
+        Device found = deviceRepository.findByName(device.getName()).orElse(new Device());
 
         //then
         assertThat(found.getName()).isEqualTo(device.getName());

@@ -30,7 +30,7 @@ public class DeviceController {
     @GetMapping(value = "/{serialno}", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public Device getDeviceBySerialNumber(@PathVariable String serialno) {
-        return service.getDeviceBySerialNo(serialno).orElseThrow(() ->
+        return service.findBySerialNo(serialno).orElseThrow(() ->
                 new DeviceNotFoundException("Device with SN " + serialno + " not found",
                         "Verify the Serial Number is correct and the device is registered with the system."));
     }

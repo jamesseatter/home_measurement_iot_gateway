@@ -12,7 +12,7 @@ import java.util.Optional;
  * Date: 10/01/2019
  * Time: 13:45
  */
-public interface MeasurementService {
+public interface MeasurementService{
 
     Optional<List<Measurement>> getMeasurementBySensor(Sensor sensor);
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
  * Date: 10/01/2019
  * Time: 12:38
  */
-public interface SensorService {
+public interface SensorService{
 
     Optional<Sensor> getSensorBySensorId(String sensorId);
 }

@@ -10,8 +10,9 @@ import java.util.Optional;
  * Date: 10/01/2019
  * Time: 09:19
  */
-public interface DeviceService {
+public interface DeviceService extends CrudService<Device, Long>{
 
-    Optional<Device> getDeviceByName(String name);
-    Optional<Device> getDeviceBySerialNo(String serialNo);
+    Optional<Device> findByName(String name);
+    Optional<Device> findBySerialNo(String serialNo);
+
 }

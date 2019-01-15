@@ -51,7 +51,7 @@ public class DeviceControllerTest {
         device.setSerialNo("12345");
         device.setOperatingSystem("Raspberian");
 
-        given(deviceService.getDeviceBySerialNo(device.getSerialNo())).willReturn(Optional.of(device));
+        given(deviceService.findBySerialNo(device.getSerialNo())).willReturn(Optional.of(device));
 
         //then
         this.mockMvc.perform(get("/api/v1/device/{serialno}", device.getSerialNo()).contentType(MediaType.APPLICATION_JSON))
@@ -63,7 +63,7 @@ public class DeviceControllerTest {
                 .andExpect(jsonPath("$.operatingSystem").value(device.getOperatingSystem()));
 
         //when
-        verify(deviceService, VerificationModeFactory.times(1)).getDeviceBySerialNo(anyString());
+        verify(deviceService, VerificationModeFactory.times(1)).findBySerialNo(anyString());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class DeviceControllerTest {
         String serialNo = "999999999";
         String message = "Device with SN " + serialNo + " not found";
         String detail = "Verify the Serial Number is correct and the device is registered with the system.";
-        when(deviceService.getDeviceBySerialNo(anyString())).thenThrow(new DeviceNotFoundException(message, detail));
+        when(deviceService.findBySerialNo(anyString())).thenThrow(new DeviceNotFoundException(message, detail));
 
         this.mockMvc.perform(get("/api/v1/device/{serialno}",999999999))
                 .andDo(print())
