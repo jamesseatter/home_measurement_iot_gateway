@@ -16,15 +16,15 @@ import java.util.Optional;
 @Service
 public class SensorServiceImpl implements SensorService {
 
-    private final SensorRepository repository;
+    private final SensorRepository sensorRepository;
 
     @Autowired
-    public SensorServiceImpl(SensorRepository repository) {
-        this.repository = repository;
+    public SensorServiceImpl(SensorRepository sensorRepository) {
+        this.sensorRepository = sensorRepository;
     }
 
     @Override
     public Optional<Sensor> getSensorBySensorId(String sensorId) {
-        return Optional.ofNullable(repository.findBySensorId(sensorId));
+        return Optional.ofNullable(sensorRepository.findBySensorId(sensorId));
     }
 }

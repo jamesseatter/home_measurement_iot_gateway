@@ -8,9 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,24 +21,17 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Time: 12:52
  */
 @RunWith(SpringRunner.class)
+@SpringBootTest
 public class SensorServiceImplTest {
 
-    @TestConfiguration
-    static class SensorServiceImplTestContextConfiguration {
-        @Bean
-        public SensorService sensorService() {
-            return new SensorServiceImpl();
-        }
-    }
-
     @Autowired
-    private SensorService sensorService;
+    private SensorServiceImpl sensorService;
 
     @MockBean
     private SensorRepository sensorRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
         Device device = new Device();
         device.setName("pi3n1");
         device.setManufacturer("pi");

@@ -30,14 +30,6 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class DeviceServiceImplTest {
 
-//    @TestConfiguration
-//    static class DeviceServiceImplTestContextConfiguration {
-//        @Bean
-//        public DeviceService deviceService() {
-//            return new DeviceServiceImpl();
-//        }
-//    }
-
     @Autowired
     private DeviceServiceImpl deviceService;
 
