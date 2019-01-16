@@ -36,10 +36,10 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public Optional<Set<Device>> findAll() {
+    public Set<Device> findAll() {
         Set<Device> devices = new HashSet<>();
         deviceRepository.findAll().forEach(devices::add);
-        return Optional.ofNullable(devices);
+        return devices;
     }
 
     @Override

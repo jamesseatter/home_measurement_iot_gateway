@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -76,7 +75,7 @@ public class DeviceServiceImplTest {
         when(deviceRepository.findAll()).thenReturn(deviceSet);
 
         //when
-        Set<Device> foundDevices = deviceService.findAll().orElse(Collections.emptySet());
+        Set<Device> foundDevices = deviceService.findAll();
 
         //then
         assertThat(foundDevices.size()).isEqualTo(2);

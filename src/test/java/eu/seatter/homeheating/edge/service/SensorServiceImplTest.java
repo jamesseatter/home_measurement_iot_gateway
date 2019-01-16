@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashSet;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -92,7 +91,7 @@ public class SensorServiceImplTest {
         sensorRepository.delete(returnedSensor);
 
         //then
-        assertThat((sensorService.findAll().orElse(new HashSet<>())).size()).isEqualTo(0);
+        assertThat(sensorService.findAll().size()).isEqualTo(0);
         verify(sensorRepository).delete(any());
     }
 
@@ -104,7 +103,7 @@ public class SensorServiceImplTest {
         sensorRepository.deleteById(returnedSensor.getId());
 
         //then
-        assertThat((sensorService.findAll().orElse(new HashSet<>())).size()).isEqualTo(0);
+        assertThat(sensorService.findAll().size()).isEqualTo(0);
         verify(sensorRepository).deleteById(any());
     }
 

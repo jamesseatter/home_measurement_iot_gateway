@@ -31,10 +31,10 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public Optional<Set<Sensor>> findAll() {
+    public Set<Sensor> findAll() {
         Set<Sensor> sensors = new HashSet<>();
         sensorRepository.findAll().forEach(sensors::add);
-        return Optional.ofNullable(sensors);
+        return sensors;
     }
 
     @Override

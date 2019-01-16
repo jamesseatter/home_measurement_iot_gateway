@@ -12,7 +12,7 @@ import java.util.Set;
 
 public interface CrudService<T, ID> {
 
-    Optional<Set<T>> findAll();
+    Set<T> findAll();
 
     Optional<T> findById(ID id);
 
