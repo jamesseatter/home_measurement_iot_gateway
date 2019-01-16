@@ -17,10 +17,10 @@ import java.util.List;
 public interface MeasurementRepository extends CrudRepository<Measurement, Long> {
 
     /**
-     * Finds measurements by using the sensor Id as a search criteria.
+     * Finds measurements by using the sensor object as a search criteria.
      * @param sensor a sensor object
      * @return  A List of measurements for the provided sensor.
      *          If no measurements are found, this method returns null.
      */
-    List<Measurement> findBySensor(Sensor sensor);
+    List<Measurement> findAllBySensor(Sensor sensor);
 }

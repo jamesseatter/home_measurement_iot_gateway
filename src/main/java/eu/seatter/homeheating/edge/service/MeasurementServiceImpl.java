@@ -6,8 +6,10 @@ import eu.seatter.homeheating.edge.repository.MeasurementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,11 +20,42 @@ import java.util.Optional;
 @Service
 public class MeasurementServiceImpl implements MeasurementService {
 
+    private final MeasurementRepository measurementRepository;
+
     @Autowired
-    private MeasurementRepository repository;
+    public MeasurementServiceImpl(MeasurementRepository measurementRepository) {
+        this.measurementRepository = measurementRepository;
+    }
+
+    public List<Measurement> findAllBySensor(Sensor sensor) {
+        return measurementRepository.findAllBySensor(sensor);
+    }
 
     @Override
-    public Optional<List<Measurement>> getMeasurementBySensor(Sensor sensor) {
-        return Optional.ofNullable(repository.findBySensor(sensor));
+    public Set<Measurement> findAll() {
+        Set<Measurement> measurementSet = new HashSet<>();
+        measurementRepository.findAll().forEach(measurementSet::add);
+        return measurementSet;
+    }
+
+    @Override
+    public Optional<Measurement> findById(Long id) {
+        return measurementRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Measurement> save(Measurement object) {
+        return Optional.ofNullable(measurementRepository.save(object));
+    }
+
+    @Override
+    public void delete(Measurement object) {
+        measurementRepository.delete(object);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        measurementRepository.deleteById(id);
+
     }
 }

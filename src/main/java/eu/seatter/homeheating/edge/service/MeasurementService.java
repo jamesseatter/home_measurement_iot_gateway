@@ -4,7 +4,6 @@ import eu.seatter.homeheating.edge.model.Measurement;
 import eu.seatter.homeheating.edge.model.Sensor;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by IntelliJ IDEA.
@@ -12,7 +11,8 @@ import java.util.Optional;
  * Date: 10/01/2019
  * Time: 13:45
  */
-public interface MeasurementService{
+public interface MeasurementService extends CrudService<Measurement, Long>{
 
-    Optional<List<Measurement>> getMeasurementBySensor(Sensor sensor);
+    List<Measurement> findAllBySensor(Sensor sensor);
+
 }
