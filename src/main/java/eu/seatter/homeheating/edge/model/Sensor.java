@@ -29,19 +29,16 @@ public class Sensor extends BaseEntity {
     private String sensorId;  // Unique ID for a sensor. Can be the OneWire ID or a made up unique ID.
 
     @NotNull
-    @Size(max = 30)
     @Column(name = "sensorType")
-    private String sensorType;
+    private SensorType sensorType;
 
     @NotNull
-    @Size(max = 30)
     @Column(name = "valueType")
-    private String valueType;  // for example, Temperature, Humidity
+    private SensorValueType valueType;  // for example, Temperature, Humidity
 
     @NotNull
-    @Size(max = 30)
     @Column(name = "valueUnit")
-    private String valueUnit;  // for example, Centigrade
+    private SensorValueUnit valueUnit;  // for example, Centigrade
 
     @NotNull
     @Column(name = "dataAdded")  // when the sensor is added update this field, UTC value.

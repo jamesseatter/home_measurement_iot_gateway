@@ -1,7 +1,6 @@
 package eu.seatter.homeheating.edge.service;
 
-import eu.seatter.homeheating.edge.model.Device;
-import eu.seatter.homeheating.edge.model.Sensor;
+import eu.seatter.homeheating.edge.model.*;
 import eu.seatter.homeheating.edge.repository.SensorRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +43,7 @@ public class SensorServiceImplTest {
     @Before
     public void setUp(){
         returnedDevice = Device.builder().name("pi3n1").manufacturer("pi").serialNo("112233").operatingSystem("raspberian").build();
-        returnedSensor = Sensor.builder().sensorId("123456").sensorType("ONEWIRE").valueType("TEMPERATURE").valueUnit("CENTIGRADE").device(returnedDevice).build();
+        returnedSensor = Sensor.builder().sensorId("123456").sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build();
     }
 
     @Test
@@ -75,8 +74,8 @@ public class SensorServiceImplTest {
     public void whenFindAll_thenSensorsShouldBeFound() {
         //given
         Set<Sensor> sensorSet = new HashSet<>();
-        sensorSet.add(Sensor.builder().sensorId("123456").sensorType("ONEWIRE").valueType("TEMPERATURE").valueUnit("CENTIGRADE").device(returnedDevice).build());
-        sensorSet.add(Sensor.builder().sensorId("998877").sensorType("ONEWIRE").valueType("TEMPERATURE").valueUnit("CENTIGRADE").device(returnedDevice).build());
+        sensorSet.add(Sensor.builder().sensorId("123456").sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build());
+        sensorSet.add(Sensor.builder().sensorId("998877").sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build());
         when(sensorRepository.findAll()).thenReturn(sensorSet);
 
         //when

@@ -1,8 +1,6 @@
 package eu.seatter.homeheating.edge.repository;
 
-import eu.seatter.homeheating.edge.model.Device;
-import eu.seatter.homeheating.edge.model.Measurement;
-import eu.seatter.homeheating.edge.model.Sensor;
+import eu.seatter.homeheating.edge.model.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,10 +46,10 @@ public class MeasurementRepositoryTest {
 
         sensor = new Sensor();
         sensor.setSensorId("id_1");
-        sensor.setSensorType("OneWire");
+        sensor.setSensorType(SensorType.ONEWIRE);
         sensor.setDevice(device);
-        sensor.setValueUnit("CENTIGRADE");
-        sensor.setValueType("TEMPERATURE");
+        sensor.setValueUnit(SensorValueUnit.CELSIUS);
+        sensor.setValueType(SensorValueType.TEMPERATURE);
         sensor.setDateAdded(LocalDateTime.now((ZoneOffset.UTC)));
         sensor.setDateModified(LocalDateTime.now((ZoneOffset.UTC)));
         sensor.setActive(true);
