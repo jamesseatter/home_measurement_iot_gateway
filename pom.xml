@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>eu.seatter.homeheating</groupId>
 	<artifactId>edge</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>home_heating_iot_edge</name>
 	<description>Demo project for Spring Boot</description>
 
