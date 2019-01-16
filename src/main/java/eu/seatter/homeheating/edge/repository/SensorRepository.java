@@ -4,6 +4,8 @@ import eu.seatter.homeheating.edge.model.Sensor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * Created by IntelliJ IDEA.
  * User: jas
@@ -19,5 +21,5 @@ public interface SensorRepository extends CrudRepository<Sensor, Long> {
      * @return  A single sensor with the exact match of the ID provided.
      *          If no sensor is found, this method returns null.
      */
-    Sensor findBySensorId(String sensorId);
+    Optional<Sensor> findBySensorId(String sensorId);
 }

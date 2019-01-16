@@ -41,9 +41,6 @@ public class DeviceServiceImplTest {
     @Before
     public void setUp() {
         returnedDevice = Device.builder().name("pi3n1").manufacturer("pi").serialNo("112233").operatingSystem("raspberian").build();
-
-//        when(deviceRepository.findByName(returnedDevice.getName())).thenReturn(returnedDevice);
-//        when(deviceRepository.findBySerialNo(returnedDevice.getSerialNo())).thenReturn(returnedDevice);
     }
 
     @Test
