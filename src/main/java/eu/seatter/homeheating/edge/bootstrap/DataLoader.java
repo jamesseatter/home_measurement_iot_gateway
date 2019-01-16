@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by IntelliJ IDEA.
@@ -45,6 +46,8 @@ public class DataLoader implements CommandLineRunner {
                 .manufacturer("pi")
                 .serialNo("112233")
                 .operatingSystem("raspberian").build();
+        deviceService.save(device);
+
         Sensor sensor = Sensor.builder()
                 .active(true)
                 .dateAdded(LocalDateTime.now(ZoneOffset.UTC))
@@ -54,13 +57,32 @@ public class DataLoader implements CommandLineRunner {
                 .valueType(SensorValueType.TEMPERATURE)
                 .valueUnit(SensorValueUnit.CELSIUS)
                 .device(device).build();
+        sensorService.save(sensor);
+
         Measurement measurement = Measurement.builder()
                 .sensor(sensor)
                 .measurementTime(LocalDateTime.now(ZoneOffset.UTC))
                 .value(20.0D).build();
+        measurementService.save(measurement);
 
-        deviceService.save(device);
-        sensorService.save(sensor);
+        addMeasurement(sensor);
+        addMeasurement(sensor);
+        addMeasurement(sensor);
+        addMeasurement(sensor);
+        addMeasurement(sensor);
+        addMeasurement(sensor);
+        addMeasurement(sensor);
+        addMeasurement(sensor);
+        addMeasurement(sensor);
+
+    }
+
+    private void addMeasurement(Sensor sensor) {
+        try { TimeUnit.MILLISECONDS.sleep(500); } catch (InterruptedException ex) {System.out.println(ex.getMessage());}
+        Measurement measurement = Measurement.builder()
+                .sensor(sensor)
+                .measurementTime(LocalDateTime.now(ZoneOffset.UTC))
+                .value(20.0D).build();
         measurementService.save(measurement);
     }
 }
