@@ -49,11 +49,11 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     public void delete(Sensor object) {
-
+        sensorRepository.delete(object);
     }
 
     @Override
-    public void deleteById(Long is) {
-
+    public void deleteById(Long id) {
+        sensorRepository.deleteById(id);
     }
 }
