@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashSet;
@@ -16,8 +17,7 @@ import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 /**
@@ -28,6 +28,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 public class SensorServiceImplTest {
 
     @Autowired
@@ -36,6 +37,9 @@ public class SensorServiceImplTest {
     @MockBean
     private SensorRepository sensorRepository;
 
+    @MockBean
+    private DeviceService deviceService;
+
     private Device returnedDevice;
 
     private Sensor returnedSensor;
@@ -43,7 +47,7 @@ public class SensorServiceImplTest {
     @Before
     public void setUp(){
         returnedDevice = Device.builder().name("pi3n1").manufacturer("pi").serialNo("112233").operatingSystem("raspberian").build();
-        returnedSensor = Sensor.builder().sensorId("123456").sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build();
+        returnedSensor = Sensor.builder().sensorId("123456").active(true).sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build();
     }
 
     @Test
@@ -74,8 +78,8 @@ public class SensorServiceImplTest {
     public void whenFindAll_thenSensorsShouldBeFound() {
         //given
         Set<Sensor> sensorSet = new HashSet<>();
-        sensorSet.add(Sensor.builder().sensorId("123456").sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build());
-        sensorSet.add(Sensor.builder().sensorId("998877").sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build());
+        sensorSet.add(Sensor.builder().sensorId("123456").active(true).sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build());
+        sensorSet.add(Sensor.builder().sensorId("998877").active(true).sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build());
         when(sensorRepository.findAll()).thenReturn(sensorSet);
 
         //when
@@ -107,7 +111,7 @@ public class SensorServiceImplTest {
 
         //then
         assertThat(savedSensor.getSensorId()).isEqualTo(returnedSensor.getSensorId());
-        verify(sensorRepository).save(any());
+        verify(sensorRepository, times(1)).save(any());
     }
 
     @Test
@@ -132,6 +136,26 @@ public class SensorServiceImplTest {
         //then
         assertThat(sensorService.findAll().size()).isEqualTo(0);
         verify(sensorRepository).deleteById(any());
+    }
+
+    @Test
+    public void givenNewSensor_whenAddNew_thenReturnSensorandUpdateDevice() {
+        //given
+        deviceService.save(returnedDevice);
+        when(sensorRepository.save(any(Sensor.class))).thenReturn(returnedSensor);
+
+        //when
+        Sensor newSensor = sensorService.addSensor(returnedSensor.getSensorId(),
+                                                    returnedSensor.getSensorType(),
+                                                    returnedSensor.getValueType(),
+                                                    returnedSensor.getValueUnit(),
+                                                    returnedSensor.getActive(),
+                                                    returnedSensor.getDevice());
+
+        //then
+        assertThat(newSensor.getSensorId()).isEqualTo(returnedSensor.getSensorId());
+        verify(sensorRepository,times(1)).save(any());
+        verify(deviceService,times(1)).save(any());
     }
 
 }

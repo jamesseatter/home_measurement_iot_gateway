@@ -31,7 +31,7 @@ public class Measurement extends BaseEntity {
     @Column(name = "value")
     private Double value;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL, optional = false)
     @JoinColumn(name = "sensor_id", nullable = false)
     @JsonIgnore
     private Sensor sensor;

@@ -52,7 +52,7 @@ public class Sensor extends BaseEntity {
     @Column(name = "active")    // True - sensor is in active use
     private Boolean active;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL, optional = false)
     @JoinColumn(name = "device_id", nullable = false)
     @JsonIgnore
     private Device device;

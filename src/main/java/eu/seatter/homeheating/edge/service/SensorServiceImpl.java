@@ -1,10 +1,12 @@
 package eu.seatter.homeheating.edge.service;
 
-import eu.seatter.homeheating.edge.model.Sensor;
+import eu.seatter.homeheating.edge.model.*;
 import eu.seatter.homeheating.edge.repository.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -19,15 +21,37 @@ import java.util.Set;
 public class SensorServiceImpl implements SensorService {
 
     private final SensorRepository sensorRepository;
+    private final DeviceService deviceService;
 
     @Autowired
-    public SensorServiceImpl(SensorRepository sensorRepository) {
+    public SensorServiceImpl(SensorRepository sensorRepository, DeviceService deviceService) {
         this.sensorRepository = sensorRepository;
+        this.deviceService = deviceService;
     }
 
     @Override
     public Optional<Sensor> findBySensorId(String sensorId) {
         return sensorRepository.findBySensorId(sensorId);
+    }
+
+    @Override
+    public Sensor addSensor(String sensorId, SensorType sensorType, SensorValueType valueType, SensorValueUnit valueUnit, boolean active, Device device) {
+
+//        Device device = deviceService.findBySerialNo(device.getSerialNo()).orElseThrow(() ->
+//                new DeviceNotFoundException("Device with SN " + device.getSerialNo() + " not found",
+//                        "Verify the Serial Number is correct and the device is registered with the system."));
+
+        Sensor sensor = new Sensor();
+        sensor.setActive(active);
+        sensor.setDateAdded(LocalDateTime.now(ZoneOffset.UTC));
+        sensor.setDateModified(LocalDateTime.now(ZoneOffset.UTC));
+        sensor.setSensorId(sensorId);
+        sensor.setSensorType(sensorType);
+        sensor.setValueType(valueType);
+        sensor.setValueUnit(valueUnit);
+        sensor.setDevice(device);
+
+        return sensorRepository.save(sensor);
     }
 
     @Override
