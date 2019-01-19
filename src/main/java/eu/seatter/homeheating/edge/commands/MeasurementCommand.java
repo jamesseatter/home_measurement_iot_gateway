@@ -1,7 +1,6 @@
 package eu.seatter.homeheating.edge.commands;
 
 
-import eu.seatter.homeheating.edge.model.Sensor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,6 +25,6 @@ public class MeasurementCommand{
     @NotNull
     private Double value;
     @NotNull
-    private Sensor sensor;
+    private SensorCommand sensor;
 
 }

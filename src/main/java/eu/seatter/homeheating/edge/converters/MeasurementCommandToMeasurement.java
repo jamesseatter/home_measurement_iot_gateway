@@ -13,6 +13,12 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MeasurementCommandToMeasurement implements Converter<MeasurementCommand, Measurement> {
+    private final SensorCommandToSensor sensorCommandToSensor;
+
+    public MeasurementCommandToMeasurement(SensorCommandToSensor sensorCommandToSensor) {
+        this.sensorCommandToSensor = sensorCommandToSensor;
+    }
+
     @Override
     public Measurement convert(MeasurementCommand source) {
         if (source == null) {
@@ -24,7 +30,7 @@ public class MeasurementCommandToMeasurement implements Converter<MeasurementCom
         dest.setId(source.getId());
         dest.setValue(source.getValue());
         dest.setMeasurementTime(source.getMeasurementTime());
-        dest.setSensor(source.getSensor());
+        dest.setSensor(sensorCommandToSensor.convert(source.getSensor()));
 
         return dest;
     }

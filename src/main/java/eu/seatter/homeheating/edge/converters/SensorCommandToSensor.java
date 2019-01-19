@@ -13,11 +13,18 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SensorCommandToSensor implements Converter<SensorCommand, Sensor> {
+    private final DeviceCommandToDevice deviceCommandToDevice;
+
+    public SensorCommandToSensor(DeviceCommandToDevice deviceCommandToDevice) {
+        this.deviceCommandToDevice = deviceCommandToDevice;
+    }
+
     @Override
     public Sensor convert(SensorCommand source) {
         if (source == null) {
             return null;
         }
+
         final Sensor dest = new Sensor();
 
         dest.setId(source.getId());
@@ -28,7 +35,7 @@ public class SensorCommandToSensor implements Converter<SensorCommand, Sensor> {
         dest.setValueUnit(source.getValueUnit());
         dest.setDateAdded(source.getDateAdded());
         dest.setDateModified(source.getDateModified());
-        dest.setDevice(source.getDevice());
+        dest.setDevice(deviceCommandToDevice.convert(source.getDevice()));
 
         return dest;
     }

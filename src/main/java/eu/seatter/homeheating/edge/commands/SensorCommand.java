@@ -1,6 +1,5 @@
 package eu.seatter.homeheating.edge.commands;
 
-import eu.seatter.homeheating.edge.model.Device;
 import eu.seatter.homeheating.edge.model.SensorType;
 import eu.seatter.homeheating.edge.model.SensorValueType;
 import eu.seatter.homeheating.edge.model.SensorValueUnit;
@@ -38,6 +37,6 @@ public class SensorCommand{
     @NotNull
     private Boolean active;
     @NotNull
-    private Device device;
+    private DeviceCommand device;
 
 }
