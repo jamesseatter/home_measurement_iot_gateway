@@ -39,12 +39,12 @@ public class SensorToSensorCommandTest {
     }
 
     @Test
-    public void whenNullPassedToConvert_thenReturnNull() {
+    public void givenNothing_whenNullPassedToConvert_thenReturnNull() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    public void whenEmptyObjectPassedToConvert_thenReturnNotNull() {
+    public void givenNothing_whenEmptyObjectPassedToConvert_thenReturnNotNull() {
         assertNotNull(converter.convert(new Sensor()));
     }
 

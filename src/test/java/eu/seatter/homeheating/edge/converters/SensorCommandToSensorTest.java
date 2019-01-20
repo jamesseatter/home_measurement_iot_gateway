@@ -40,12 +40,12 @@ public class SensorCommandToSensorTest {
     }
 
     @Test
-    public void whenNullPassedToConvert_thenReturnNull() {
+    public void givenNothing_whenNullPassedToConvert_thenReturnNull() {
         assertNull(converter.convert(null));
     }
 
     @Test
-    public void whenEmptyObjectPassedToConvert_thenReturnNotNull() {
+    public void givenNothing_whenEmptyObjectPassedToConvert_thenReturnNotNull() {
         assertNotNull(converter.convert(new SensorCommand()));
     }
 
@@ -83,6 +83,13 @@ public class SensorCommandToSensorTest {
     @Test
     public void givenSensorCommand_whenConvertedWithDevice_thenReturnSenor() {
         //given
+        DeviceCommand deviceCommand = new DeviceCommand();
+        deviceCommand.setId(ID_VALUE);
+        deviceCommand.setSerialNo(SERIALNO_VALUE);
+        deviceCommand.setName(NAME_VALUE);
+        deviceCommand.setManufacturer(MANUFACTURER_VALUE);
+        deviceCommand.setOperatingSystem(OPERATINGSYSTEM_VALUE);
+
         SensorCommand sensorCommand = new SensorCommand();
         sensorCommand.setId(ID_VALUE);
         sensorCommand.setSensorId(SENSORID_VALUE);
@@ -93,14 +100,6 @@ public class SensorCommandToSensorTest {
         sensorCommand.setDateModified(DATEMODIFIED_VALUE);
         sensorCommand.setActive(ACTIVE_VALUE);
         sensorCommand.setDevice(null);
-
-        DeviceCommand deviceCommand = new DeviceCommand();
-        deviceCommand.setId(ID_VALUE);
-        deviceCommand.setSerialNo(SERIALNO_VALUE);
-        deviceCommand.setName(NAME_VALUE);
-        deviceCommand.setManufacturer(MANUFACTURER_VALUE);
-        deviceCommand.setOperatingSystem(OPERATINGSYSTEM_VALUE);
-
         sensorCommand.setDevice(deviceCommand);
 
         //when
