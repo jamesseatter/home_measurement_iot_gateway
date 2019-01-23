@@ -1,7 +1,6 @@
 package eu.seatter.homeheating.edge.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,16 +23,16 @@ import java.time.LocalDateTime;
 public class Measurement extends BaseEntity {
 
     @NotNull
-    @Column(name = "measurementTime")
+    @Column(name = "measurementtime")
     private LocalDateTime measurementTime;
 
     @NotNull
     @Column(name = "value")
     private Double value;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL, optional = false)
-    @JoinColumn(name = "sensor_id", nullable = false)
-    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "sensor_id", nullable = false)
+    @ManyToOne
     private Sensor sensor;
 
 }

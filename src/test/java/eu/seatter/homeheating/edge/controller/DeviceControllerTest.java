@@ -6,7 +6,6 @@ import eu.seatter.homeheating.edge.model.Device;
 import eu.seatter.homeheating.edge.service.DeviceService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.verification.VerificationModeFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -19,8 +18,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -53,7 +51,7 @@ public class DeviceControllerTest {
 
         given(deviceService.findBySerialNo(device.getSerialNo())).willReturn(Optional.of(device));
 
-        //then
+        //when
         this.mockMvc.perform(get("/api/v1/device/{serialno}", device.getSerialNo()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -62,8 +60,8 @@ public class DeviceControllerTest {
                 .andExpect(jsonPath("$.name").value(device.getName()))
                 .andExpect(jsonPath("$.operatingSystem").value(device.getOperatingSystem()));
 
-        //when
-        verify(deviceService, VerificationModeFactory.times(1)).findBySerialNo(anyString());
+        //then
+        verify(deviceService, times(1)).findBySerialNo(anyString());
     }
 
     @Test
@@ -74,6 +72,7 @@ public class DeviceControllerTest {
         String detail = "Verify the Serial Number is correct and the device is registered with the system.";
         when(deviceService.findBySerialNo(anyString())).thenThrow(new DeviceNotFoundException(message, detail));
 
+        //when
         this.mockMvc.perform(get("/api/v1/device/{serialno}",999999999))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
@@ -81,5 +80,8 @@ public class DeviceControllerTest {
                 .andExpect(jsonPath("$.error_code" ).value("NOT_FOUND"))
                 .andExpect(jsonPath("$.message" ).value(message))
                 .andExpect(jsonPath("$.detail" ).value(detail));
+
+        //then
+
     }
 }

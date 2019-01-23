@@ -1,9 +1,12 @@
 package eu.seatter.homeheating.edge.service;
 
+import eu.seatter.homeheating.edge.exceptions.DeviceNotFoundException;
+import eu.seatter.homeheating.edge.exceptions.SensorNotFoundException;
 import eu.seatter.homeheating.edge.model.*;
 import eu.seatter.homeheating.edge.repository.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -37,9 +40,9 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor addSensor(String sensorId, SensorType sensorType, SensorValueType valueType, SensorValueUnit valueUnit, boolean active, Device device) {
 
-//        Device device = deviceService.findBySerialNo(device.getSerialNo()).orElseThrow(() ->
-//                new DeviceNotFoundException("Device with SN " + device.getSerialNo() + " not found",
-//                        "Verify the Serial Number is correct and the device is registered with the system."));
+        Device deviceInDB = deviceService.findBySerialNo(device.getSerialNo()).orElseThrow(() ->
+                new DeviceNotFoundException("Device with SN " + device.getSerialNo() + " not found",
+                        "Verify the Serial Number is correct and the device is registered with the system."));
 
         Sensor sensor = new Sensor();
         sensor.setActive(active);
@@ -62,8 +65,18 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
+    @Transactional
     public Optional<Sensor> findById(Long id) {
         return sensorRepository.findById(id);
+    }
+
+    @Override
+    @Transactional
+    public Sensor findById2(Long id) {
+
+        return sensorRepository.findById(id).orElseThrow(() ->
+                new SensorNotFoundException("Sensor with Id " + id + " not found",
+                        "Verify the Id is correct and the Sensor is registered with the system"));
     }
 
     @Override

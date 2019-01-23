@@ -14,5 +14,6 @@ public interface SensorService extends CrudService<Sensor, Long>{
 
     Optional<Sensor> findBySensorId(String sensorId);
     Sensor addSensor(String sensorId, SensorType sensorType, SensorValueType valueType, SensorValueUnit valueUnit, boolean active, Device device);
+    Sensor findById2(Long id);
 }
 

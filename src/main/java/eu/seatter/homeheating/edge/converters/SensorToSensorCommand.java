@@ -1,5 +1,6 @@
 package eu.seatter.homeheating.edge.converters;
 
+import eu.seatter.homeheating.edge.commands.DeviceCommand;
 import eu.seatter.homeheating.edge.commands.SensorCommand;
 import eu.seatter.homeheating.edge.model.Sensor;
 import org.springframework.core.convert.converter.Converter;
@@ -26,6 +27,7 @@ public class SensorToSensorCommand implements Converter<Sensor, SensorCommand> {
         }
 
         final SensorCommand dest = new SensorCommand();
+        DeviceCommand deviceCommand = deviceToDeviceCommand.convert(source.getDevice());
 
         dest.setId(source.getId());
         dest.setActive(source.getActive());
@@ -35,7 +37,7 @@ public class SensorToSensorCommand implements Converter<Sensor, SensorCommand> {
         dest.setValueUnit(source.getValueUnit());
         dest.setDateAdded(source.getDateAdded());
         dest.setDateModified(source.getDateModified());
-        dest.setDevice(deviceToDeviceCommand.convert(source.getDevice()));
+        dest.setDevice(deviceCommand);
 
         return dest;
     }

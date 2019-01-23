@@ -34,9 +34,9 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(DeviceNotFoundException.class)
+    @ExceptionHandler({DeviceNotFoundException.class,SensorNotFoundException.class})
     protected ResponseEntity<Object> handleCustomAPIException(DeviceNotFoundException ex) {
-        log.error("Device Not Found:" + ex.getLocalizedMessage());
+        log.error("Exception:" + ex.getLocalizedMessage());
         ApiErrorResponse response =new ApiErrorResponse.ApiErrorResponseBuilder()
                 .withStatus(HttpStatus.NOT_FOUND)
                 .withError_code(HttpStatus.NOT_FOUND.name())

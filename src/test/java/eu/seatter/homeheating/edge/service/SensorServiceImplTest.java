@@ -141,7 +141,7 @@ public class SensorServiceImplTest {
     @Test
     public void givenNewSensor_whenAddNew_thenReturnSensorandUpdateDevice() {
         //given
-        deviceService.save(returnedDevice);
+        when(deviceService.findBySerialNo(anyString())).thenReturn(Optional.of(returnedDevice));
         when(sensorRepository.save(any(Sensor.class))).thenReturn(returnedSensor);
 
         //when
@@ -155,7 +155,7 @@ public class SensorServiceImplTest {
         //then
         assertThat(newSensor.getSensorId()).isEqualTo(returnedSensor.getSensorId());
         verify(sensorRepository,times(1)).save(any());
-        verify(deviceService,times(1)).save(any());
+        verify(deviceService,times(1)).findBySerialNo(any());
     }
 
 }

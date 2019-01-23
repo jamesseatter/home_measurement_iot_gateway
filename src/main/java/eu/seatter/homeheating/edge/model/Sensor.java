@@ -1,12 +1,13 @@
 package eu.seatter.homeheating.edge.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,40 +22,50 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "sensor")
-public class Sensor extends BaseEntity {
+public class Sensor extends BaseEntity implements Comparable<Sensor> {
 
     @NotNull
     @Size(max=20)
-    @Column(name="sensorId")
+    @Column(name="sensorid")
     private String sensorId;  // Unique ID for a sensor. Can be the OneWire ID or a made up unique ID.
 
     @NotNull
-    @Column(name = "sensorType")
+    @Column(name = "sensortype")
+    @Enumerated(value = EnumType.STRING)
     private SensorType sensorType;
 
     @NotNull
-    @Column(name = "valueType")
+    @Column(name = "valuetype")
+    @Enumerated(value = EnumType.STRING)
     private SensorValueType valueType;  // for example, Temperature, Humidity
 
     @NotNull
-    @Column(name = "valueUnit")
+    @Column(name = "valueunit")
+    @Enumerated(value = EnumType.STRING)
     private SensorValueUnit valueUnit;  // for example, Centigrade
 
     @NotNull
-    @Column(name = "dataAdded")  // when the sensor is added update this field, UTC value.
+    @Column(name = "dateadded")  // when the sensor is added update this field, UTC value.
     private LocalDateTime dateAdded;
 
     @NotNull
-    @Column(name = "dataModified")  // each time the sensor record is altered update this field, UTC value.
+    @Column(name = "datemodified")  // each time the sensor record is altered update this field, UTC value.
     private LocalDateTime dateModified;
 
     @NotNull
     @Column(name = "active")    // True - sensor is in active use
     private Boolean active;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL, optional = false)
-    @JoinColumn(name = "device_id", nullable = false)
-    @JsonIgnore
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "device_id", nullable = false)
+    @ManyToOne
     private Device device;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sensor", orphanRemoval = true)
+    private Set<Measurement> measurements = new HashSet<>();
+
+    @Override
+    public int compareTo(Sensor o) {
+        return super.getId().compareTo(o.getId());
+    }
 }
