@@ -1,7 +1,6 @@
 package eu.seatter.homeheating.edge.service;
 
 import eu.seatter.homeheating.edge.exceptions.DeviceNotFoundException;
-import eu.seatter.homeheating.edge.exceptions.SensorNotFoundException;
 import eu.seatter.homeheating.edge.model.*;
 import eu.seatter.homeheating.edge.repository.SensorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,15 +67,6 @@ public class SensorServiceImpl implements SensorService {
     @Transactional
     public Optional<Sensor> findById(Long id) {
         return sensorRepository.findById(id);
-    }
-
-    @Override
-    @Transactional
-    public Sensor findById2(Long id) {
-
-        return sensorRepository.findById(id).orElseThrow(() ->
-                new SensorNotFoundException("Sensor with Id " + id + " not found",
-                        "Verify the Id is correct and the Sensor is registered with the system"));
     }
 
     @Override

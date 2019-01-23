@@ -14,8 +14,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -84,4 +87,47 @@ public class DeviceControllerTest {
         //then
 
     }
+
+    @Test
+    public void whenGetDeviceAll_thenShouldReturnDeviceListAsJSON() throws Exception {
+        //given
+        Set<Device> deviceSet = new HashSet<>();
+        Device device = new Device();
+        device.setId(1L);
+        device.setName("Dev1");
+        device.setManufacturer("Pi");
+        device.setSerialNo("12345");
+        device.setOperatingSystem("Raspberian");
+
+        Device device2 = new Device();
+        device2.setId(2L);
+        device2.setName("Dev2");
+        device2.setManufacturer("Pi");
+        device2.setSerialNo("22334455");
+        device2.setOperatingSystem("Raspberian");
+
+        deviceSet.add(device);
+        deviceSet.add(device2);
+
+        given(deviceService.findAll()).willReturn(deviceSet);
+
+        //when
+        this.mockMvc.perform(get("/api/v1/device/").contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$",hasSize(2)))
+                .andExpect(jsonPath("$[0].serialNo").value(device.getSerialNo()))
+                .andExpect(jsonPath("$[0].manufacturer").value(device.getManufacturer()))
+                .andExpect(jsonPath("$[0].name").value(device.getName()))
+                .andExpect(jsonPath("$[0].operatingSystem").value(device.getOperatingSystem()))
+                .andExpect(jsonPath("$[1].serialNo").value(device2.getSerialNo()))
+                .andExpect(jsonPath("$[1].manufacturer").value(device2.getManufacturer()))
+                .andExpect(jsonPath("$[1].name").value(device2.getName()))
+                .andExpect(jsonPath("$[1].operatingSystem").value(device2.getOperatingSystem()));
+
+        //then
+        verify(deviceService, times(1)).findAll();
+    }
+
 }

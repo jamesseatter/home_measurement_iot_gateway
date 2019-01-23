@@ -21,7 +21,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "device")
-public class Device extends BaseEntity {
+public class Device extends BaseEntity implements Comparable<Device> {
 
     @NotNull
     @Size(max = 30)
@@ -46,5 +46,9 @@ public class Device extends BaseEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "device", orphanRemoval = true)
     private Set<Sensor> sensors = new HashSet<>();
 
+    @Override
+    public int compareTo(Device o) {
+        return super.getId().compareTo(o.getId());
+    }
 
 }
