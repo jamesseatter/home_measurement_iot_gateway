@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/device")
+@RequestMapping("/api/v1/")
 
 public class DeviceController {
 
@@ -34,7 +34,7 @@ public class DeviceController {
         this.converter = converter;
     }
 
-    @GetMapping(value = {"","/"}, produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {"devices","devices/"}, produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public List<DeviceCommand> getAllDevices() {
         log.debug("Entered getAllSensors");
@@ -46,7 +46,7 @@ public class DeviceController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/{id}", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "device/{id}", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public DeviceCommand getDeviceBySerialNumber(@PathVariable Long id) {
         log.debug("Entered getDeviceBySerialNumber, id=" + id);
@@ -56,7 +56,7 @@ public class DeviceController {
         return converter.convert(foundDevice);
     }
 
-    @GetMapping(value = {"","/"}, params = "name", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {"device","device/"}, params = "name", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public DeviceCommand getDeviceByName(@RequestParam String name) {
         log.debug("Entered getDeviceByName, name=" + name);
@@ -67,7 +67,7 @@ public class DeviceController {
         return converter.convert(foundDevice);
     }
 
-    @GetMapping(value = {"","/"}, params = "serialno", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {"device","device/"}, params = "serialno", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public DeviceCommand getDeviceBySerialNo(@RequestParam String serialno) {
         log.debug("Entered getDeviceBySerialNo, serialno=" + serialno);

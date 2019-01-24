@@ -114,7 +114,7 @@ public class DeviceControllerTest {
         given(deviceService.findAll()).willReturn(deviceSet);
 
         //when
-        this.mockMvc.perform(get("/api/v1/device/").contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/v1/devices").contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))

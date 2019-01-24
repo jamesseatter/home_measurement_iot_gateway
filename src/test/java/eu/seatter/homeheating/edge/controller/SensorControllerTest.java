@@ -96,7 +96,7 @@
 //        given(sensorService.findAll()).willReturn(sensorSet);
 //
 //        //when
-//        this.mockMvc.perform(get("/api/v1/sensor/").contentType(MediaType.APPLICATION_JSON))
+//        this.mockMvc.perform(get("/api/v1/sensors/").contentType(MediaType.APPLICATION_JSON))
 //                .andDo(print())
 //                .andExpect(MockMvcResultMatchers.status().isOk())
 //                .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));

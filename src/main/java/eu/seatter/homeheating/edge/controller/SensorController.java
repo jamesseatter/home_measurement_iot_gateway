@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/sensor")
+@RequestMapping("/api/v1/")
 public class SensorController {
 
     private final SensorService sensorService;
@@ -35,7 +35,7 @@ public class SensorController {
         this.converter = converter;
     }
 
-    @GetMapping(value = {"","/"}, produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {"sensors","sensors/"}, produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public List<SensorCommand> getAllSensors() {
         log.debug("Entered getAllSensors");
@@ -46,7 +46,7 @@ public class SensorController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/{id}/show", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/sensor/{id}/show", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public SensorCommand getSensorById(@PathVariable Long id) {
         log.debug("Entered getSensorById, id=" + id);
