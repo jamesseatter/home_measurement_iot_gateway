@@ -36,7 +36,7 @@ public class DeviceController {
 
     @GetMapping(value = {"","/"}, produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
-    public List<DeviceCommand> getAllSensors() {
+    public List<DeviceCommand> getAllDevices() {
         log.debug("Entered getAllSensors");
         Set<Device> foundSensors = deviceService.findAll();
 
@@ -48,11 +48,22 @@ public class DeviceController {
 
     @GetMapping(value = "/{serialno}", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
-    public Device getDeviceBySerialNumber(@PathVariable String serialno) {
-        return deviceService.findBySerialNo(serialno).orElseThrow(() ->
+    public DeviceCommand getDeviceBySerialNumber(@PathVariable String serialno) {
+        Device foundDevice =  deviceService.findBySerialNo(serialno).orElseThrow(() ->
                 new DeviceNotFoundException("Device with SN " + serialno + " not found",
                         "Verify the Serial Number is correct and the device is registered with the system."));
+        DeviceCommand deviceCommand = converter.convert(foundDevice);
+        return deviceCommand;
     }
 
+    @GetMapping(value = {"","/"}, params = "name", produces = "application/json;charset=UTF-8")
+    @ResponseStatus(HttpStatus.OK)
+    public DeviceCommand getDeviceByName(@RequestParam String name) {
+        Device foundDevice = deviceService.findByName(name).orElseThrow(() ->
+                new DeviceNotFoundException("Device with Name " + name + " not found",
+                        "Verify the Name is correct and the device is registered with the system."));
 
+        DeviceCommand deviceCommand = converter.convert(foundDevice);
+        return deviceCommand;
+    }
 }

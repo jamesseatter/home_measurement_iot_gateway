@@ -1,5 +1,3 @@
-////TODO Make this thing work. The controller works, but the tests do not.
-//
 //package eu.seatter.homeheating.edge.controller;
 //
 //import eu.seatter.homeheating.edge.model.Sensor;
@@ -16,24 +14,23 @@
 //import org.springframework.http.MediaType;
 //import org.springframework.test.context.junit4.SpringRunner;
 //import org.springframework.test.web.servlet.MockMvc;
+//import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 //
 //import java.time.LocalDateTime;
 //import java.time.ZoneOffset;
-//import java.util.Optional;
+//import java.util.HashSet;
+//import java.util.Set;
 //
 //import static org.assertj.core.api.Assertions.assertThat;
-//import static org.mockito.ArgumentMatchers.anyLong;
 //import static org.mockito.BDDMockito.given;
-//import static org.mockito.Mockito.times;
-//import static org.mockito.Mockito.verify;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 //import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 //
 ///**
 // * Created by IntelliJ IDEA.
 // * User: jas
-// * Date: 20/01/2019
-// * Time: 01:13
+// * Date: 24/01/2019
+// * Time: 08:37
 // */
 //@RunWith(SpringRunner.class)
 //@WebMvcTest(SensorController.class)
@@ -60,6 +57,7 @@
 //        sensor.setDevice(null);
 //    }
 //
+//
 //    @Test
 //    public void mockSetup() {
 //        assertThat(this.sensor).isNotNull();
@@ -67,25 +65,44 @@
 //    }
 //
 //    @Test
-//    public void givenSensor_whenFindById_thenShouldReturnSensorAsJSON() throws Exception {
+//    public void whenGetSensorAll_thenShouldReturnSensorListAsJSON() throws Exception {
 //        //given
-//        given(sensorService.findById(sensor.getId())).willReturn(Optional.of(sensor));
+//        Sensor sensor1 = new Sensor();
+//        sensor.setId(2L);
+//        sensor.setSensorId("124421");
+//        sensor.setSensorType(SensorType.ONEWIRE);
+//        sensor.setValueType(SensorValueType.TEMPERATURE);
+//        sensor.setValueUnit(SensorValueUnit.CELSIUS);
+//        sensor.setDateAdded(LocalDateTime.now(ZoneOffset.UTC));
+//        sensor.setDateModified(LocalDateTime.now(ZoneOffset.UTC));
+//        sensor.setActive(true);
+//        sensor.setDevice(null);
+//
+//        Sensor sensor2 = new Sensor();
+//        sensor2.setId(3L);
+//        sensor2.setSensorId("124421");
+//        sensor2.setSensorType(SensorType.ONEWIRE);
+//        sensor2.setValueType(SensorValueType.TEMPERATURE);
+//        sensor2.setValueUnit(SensorValueUnit.CELSIUS);
+//        sensor2.setDateAdded(LocalDateTime.now(ZoneOffset.UTC));
+//        sensor2.setDateModified(LocalDateTime.now(ZoneOffset.UTC));
+//        sensor2.setActive(true);
+//        sensor2.setDevice(null);
+//
+//        Set<Sensor> sensorSet = new HashSet<>();
+//        sensorSet.add(sensor1);
+//        sensorSet.add(sensor2);
+//
+//        given(sensorService.findAll()).willReturn(sensorSet);
 //
 //        //when
-//        this.mockMvc.perform(get("api/v1/sensor/{id}/show",sensor.getId()).contentType(MediaType.APPLICATION_JSON))
-//                .andDo(print());
-//                //.andExpect(status().isOk());
-////                .andExpect(jsonPath("$.sensorId").value(sensor.getSensorId()))
-////                .andExpect(jsonPath("$.sensorType").value(sensor.getSensorType()))
-////                .andExpect(jsonPath("$.valueType").value(sensor.getValueType()))
-////                .andExpect(jsonPath("$.valueUnit").value(sensor.getValueUnit()))
-////                .andExpect(jsonPath("$.dateAdded").value(sensor.getDateAdded()))
-////                .andExpect(jsonPath("$.dateModified").value(sensor.getDateModified()))
-////                .andExpect(jsonPath("$.active").value(sensor.getActive()))
-////                .andExpect(jsonPath("$.device").isEmpty());
+//        this.mockMvc.perform(get("/api/v1/sensor/").contentType(MediaType.APPLICATION_JSON))
+//                .andDo(print())
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
 //
-//        //then
-//        verify(sensorService, times(1)).findById(anyLong());
 //    }
 //
+//
 //}
+//

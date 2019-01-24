@@ -4,6 +4,7 @@ import eu.seatter.homeheating.edge.model.Device;
 import eu.seatter.homeheating.edge.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -26,11 +27,14 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @Transactional
     public Optional<Device> findByName(String name) {
-        return deviceRepository.findByName(name);
+        Optional<Device> foundDevice = deviceRepository.findByName(name);
+        return foundDevice;
     }
 
     @Override
+    @Transactional
     public Optional<Device> findBySerialNo(String serialNo) {
         return deviceRepository.findBySerialNo(serialNo);
     }
