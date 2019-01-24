@@ -67,6 +67,14 @@ public class SensorServiceImpl implements SensorService {
 
     @Override
     @Transactional
+    public Set<Sensor> findAllByDevice(Device device) {
+        Set<Sensor> sensors = new HashSet<>();
+        sensorRepository.findAllByDevice(device).forEach(sensors::add);
+        return sensors;
+    }
+
+    @Override
+    @Transactional
     public Optional<Sensor> findById(Long id) {
         return sensorRepository.findById(id);
     }

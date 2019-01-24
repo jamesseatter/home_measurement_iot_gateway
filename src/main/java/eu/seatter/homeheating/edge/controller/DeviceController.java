@@ -1,11 +1,16 @@
 package eu.seatter.homeheating.edge.controller;
 
 import eu.seatter.homeheating.edge.commands.DeviceCommand;
+import eu.seatter.homeheating.edge.commands.SensorCommand;
 import eu.seatter.homeheating.edge.converters.DeviceToDeviceCommand;
+import eu.seatter.homeheating.edge.converters.SensorToSensorCommand;
 import eu.seatter.homeheating.edge.exceptions.DeviceNotFoundException;
 import eu.seatter.homeheating.edge.model.Device;
+import eu.seatter.homeheating.edge.model.Sensor;
 import eu.seatter.homeheating.edge.service.DeviceService;
+import eu.seatter.homeheating.edge.service.SensorService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,20 +26,27 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping(value = "/api/v1/", produces = "application/json;charset=UTF-8")
 
 public class DeviceController {
 
     private final DeviceService deviceService;
 
-    private final DeviceToDeviceCommand converter;
+    private final SensorService sensorService;
 
-    public DeviceController(DeviceService deviceService, DeviceToDeviceCommand converter) {
+    private final DeviceToDeviceCommand converterDeviceToDeviceCommand;
+
+    private final SensorToSensorCommand converterSensorToSensorCommand;
+
+    @Autowired
+    public DeviceController(DeviceService deviceService, SensorService sensorService, DeviceToDeviceCommand converterDeviceToDeviceCommand, SensorToSensorCommand converterSensorToSensorCommand) {
         this.deviceService = deviceService;
-        this.converter = converter;
+        this.sensorService = sensorService;
+        this.converterDeviceToDeviceCommand = converterDeviceToDeviceCommand;
+        this.converterSensorToSensorCommand = converterSensorToSensorCommand;
     }
 
-    @GetMapping(value = {"devices","devices/"}, produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {"devices","devices/"})
     @ResponseStatus(HttpStatus.OK)
     public List<DeviceCommand> getAllDevices() {
         log.debug("Entered getAllSensors");
@@ -42,21 +54,21 @@ public class DeviceController {
 
         return foundSensors.stream()
                 .sorted()
-                .map(converter::convert)
+                .map(converterDeviceToDeviceCommand::convert)
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(value = "device/{id}", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "device/{id}")
     @ResponseStatus(HttpStatus.OK)
     public DeviceCommand getDeviceBySerialNumber(@PathVariable Long id) {
         log.debug("Entered getDeviceBySerialNumber, id=" + id);
         Device foundDevice =  deviceService.findById(id).orElseThrow(() ->
                 new DeviceNotFoundException("Device with ID " + id + " not found",
                         "Verify the ID is correct and the device is registered with the system."));
-        return converter.convert(foundDevice);
+        return converterDeviceToDeviceCommand.convert(foundDevice);
     }
 
-    @GetMapping(value = {"device","device/"}, params = "name", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {"device","device/"}, params = "name")
     @ResponseStatus(HttpStatus.OK)
     public DeviceCommand getDeviceByName(@RequestParam String name) {
         log.debug("Entered getDeviceByName, name=" + name);
@@ -64,10 +76,10 @@ public class DeviceController {
                 new DeviceNotFoundException("Device with Name " + name + " not found",
                         "Verify the Name is correct and the device is registered with the system."));
 
-        return converter.convert(foundDevice);
+        return converterDeviceToDeviceCommand.convert(foundDevice);
     }
 
-    @GetMapping(value = {"device","device/"}, params = "serialno", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = {"device","device/"}, params = "serialno")
     @ResponseStatus(HttpStatus.OK)
     public DeviceCommand getDeviceBySerialNo(@RequestParam String serialno) {
         log.debug("Entered getDeviceBySerialNo, serialno=" + serialno);
@@ -75,6 +87,22 @@ public class DeviceController {
                 new DeviceNotFoundException("Device with SN " + serialno + " not found",
                         "Verify the Serial Number is correct and the device is registered with the system."));
 
-        return converter.convert(foundDevice);
+        return converterDeviceToDeviceCommand.convert(foundDevice);
     }
+
+    @GetMapping(value={"device/{id}/sensors","device/{id}/sensors/"})
+    @ResponseStatus(HttpStatus.OK)
+    public List<SensorCommand> getDeviceSensors(@PathVariable Long id) {
+        log.debug("Entered getSensorMeasurements, id=" + id);
+        Device foundDevice =  deviceService.findById(id).orElseThrow(() ->
+                new DeviceNotFoundException("Device with ID " + id + " not found",
+                        "Verify the ID is correct and the device is registered with the system."));
+
+        Set<Sensor> sensors = sensorService.findAllByDevice(foundDevice);
+        return sensors.stream()
+                .sorted()
+                .map(converterSensorToSensorCommand::convert)
+                .collect(Collectors.toList());
+    }
+
 }

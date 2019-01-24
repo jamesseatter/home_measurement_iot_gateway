@@ -1,10 +1,12 @@
 package eu.seatter.homeheating.edge.repository;
 
+import eu.seatter.homeheating.edge.model.Device;
 import eu.seatter.homeheating.edge.model.Sensor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,4 +24,5 @@ public interface SensorRepository extends CrudRepository<Sensor, Long> {
      *          If no sensor is found, this method returns null.
      */
     Optional<Sensor> findBySensorId(String sensorId);
+    Set<Sensor> findAllByDevice(Device device);
 }

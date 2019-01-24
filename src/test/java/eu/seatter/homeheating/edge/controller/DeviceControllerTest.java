@@ -3,7 +3,9 @@ package eu.seatter.homeheating.edge.controller;
 
 import eu.seatter.homeheating.edge.exceptions.DeviceNotFoundException;
 import eu.seatter.homeheating.edge.model.Device;
+import eu.seatter.homeheating.edge.model.Sensor;
 import eu.seatter.homeheating.edge.service.DeviceService;
+import eu.seatter.homeheating.edge.service.SensorService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,9 @@ public class DeviceControllerTest {
 
     @MockBean
     private DeviceService deviceService;
+
+    @MockBean
+    SensorService sensorService;
 
     @Test
     public void whenGetDeviceById_thenShouldReturnDeviceAsJSON() throws Exception {
@@ -220,5 +225,45 @@ public class DeviceControllerTest {
 
         //then
         verify(deviceService, times(1)).findBySerialNo(anyString());
+    }
+
+    @Test
+    public void whenGetDeviceSensorsByDeviceID_thenShouldReturnSensorListAsJSON() throws Exception {
+        //given
+
+        Device device = new Device();
+        device.setId(1L);
+        device.setName("Dev1");
+        device.setManufacturer("Pi");
+        device.setSerialNo("12345");
+        device.setOperatingSystem("Raspberian");
+
+        Set<Sensor> sensorSet = new HashSet<>();
+        Sensor sensor1 = new Sensor();
+        sensor1.setId(1L);
+        sensor1.setSensorId("9764423");
+
+        Sensor sensor2 = new Sensor();
+        sensor2.setId(2L);
+        sensor2.setSensorId("124421");
+
+        sensorSet.add(sensor1);
+        sensorSet.add(sensor2);
+
+        device.getSensors().add(sensor1);
+        device.getSensors().add(sensor2);
+
+        when(deviceService.findById(anyLong())).thenReturn(Optional.of(device));
+        when(sensorService.findAllByDevice(any(Device.class))).thenReturn(sensorSet);
+
+        //when
+        this.mockMvc.perform(get("/api/v1/device/{id}/sensors",device.getId()).contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$",hasSize(2)))
+                .andExpect(jsonPath("$[0].sensorId").value("9764423"))
+                .andExpect(jsonPath("$[1].sensorId").value("124421"));
+
+
     }
 }
