@@ -44,39 +44,41 @@ public class DeviceControllerTest {
     private DeviceService deviceService;
 
     @Test
-    public void whenGetDeviceBySerialNo_thenShouldReturnDeviceAsJSON() throws Exception {
+    public void whenGetDeviceById_thenShouldReturnDeviceAsJSON() throws Exception {
         //given
         Device device = new Device();
+        device.setId(1L);
         device.setName("Dev1");
         device.setManufacturer("Pi");
         device.setSerialNo("12345");
         device.setOperatingSystem("Raspberian");
 
-        given(deviceService.findBySerialNo(device.getSerialNo())).willReturn(Optional.of(device));
+        given(deviceService.findById(anyLong())).willReturn(Optional.of(device));
 
         //when
-        this.mockMvc.perform(get("/api/v1/device/{serialno}", device.getSerialNo()).contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/v1/device/{id}", device.getId()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.id").value(device.getId()))
                 .andExpect(jsonPath("$.serialNo").value(device.getSerialNo()))
                 .andExpect(jsonPath("$.manufacturer").value(device.getManufacturer()))
                 .andExpect(jsonPath("$.name").value(device.getName()))
                 .andExpect(jsonPath("$.operatingSystem").value(device.getOperatingSystem()));
 
         //then
-        verify(deviceService, times(1)).findBySerialNo(anyString());
+        verify(deviceService, times(1)).findById(anyLong());
     }
 
     @Test
-    public void whenGetDeviceBySerialNoBADValue_thenShouldReturn404DeviceNotFoundAsJSON() throws Exception{
+    public void whenGetDeviceByIdBADValue_thenShouldReturn404DeviceNotFoundAsJSON() throws Exception{
         //given
-        String serialNo = "999999999";
-        String message = "Device with SN " + serialNo + " not found";
-        String detail = "Verify the Serial Number is correct and the device is registered with the system.";
-        when(deviceService.findBySerialNo(anyString())).thenThrow(new DeviceNotFoundException(message, detail));
+        Long badId = 99999999L;
+        String message = "Device with ID " + badId + " not found";
+        String detail = "Verify the ID is correct and the device is registered with the system.";
+        when(deviceService.findById(anyLong())).thenThrow(new DeviceNotFoundException(message, detail));
 
         //when
-        this.mockMvc.perform(get("/api/v1/device/{serialno}",serialNo))
+        this.mockMvc.perform(get("/api/v1/device/{id}",badId))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andExpect(jsonPath("$.status" ).value("NOT_FOUND"))
@@ -175,4 +177,48 @@ public class DeviceControllerTest {
 
     }
 
+    @Test
+    public void whenGetDeviceBySerialNo_thenShouldReturnDeviceAsJSON() throws Exception {
+        //given
+        Device device = new Device();
+        device.setName("Dev1");
+        device.setManufacturer("Pi");
+        device.setSerialNo("12345");
+        device.setOperatingSystem("Raspberian");
+
+        given(deviceService.findBySerialNo(device.getSerialNo())).willReturn(Optional.of(device));
+
+        //when
+        this.mockMvc.perform(get("/api/v1/device").param("serialno", device.getSerialNo()).contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.serialNo").value(device.getSerialNo()))
+                .andExpect(jsonPath("$.manufacturer").value(device.getManufacturer()))
+                .andExpect(jsonPath("$.name").value(device.getName()))
+                .andExpect(jsonPath("$.operatingSystem").value(device.getOperatingSystem()));
+
+        //then
+        verify(deviceService, times(1)).findBySerialNo(anyString());
+    }
+
+    @Test
+    public void whenGetDeviceBySerialNoBADValue_thenShouldReturn404DeviceNotFoundAsJSON() throws Exception{
+        //given
+        String serialNo = "999999999";
+        String message = "Device with SN " + serialNo + " not found";
+        String detail = "Verify the Serial Number is correct and the device is registered with the system.";
+        when(deviceService.findBySerialNo(anyString())).thenThrow(new DeviceNotFoundException(message, detail));
+
+        //when
+        this.mockMvc.perform(get("/api/v1/device/").param("serialno",serialNo))
+                .andDo(print())
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
+                .andExpect(jsonPath("$.status" ).value("NOT_FOUND"))
+                .andExpect(jsonPath("$.error_code" ).value("NOT_FOUND"))
+                .andExpect(jsonPath("$.message" ).value(message))
+                .andExpect(jsonPath("$.detail" ).value(detail));
+
+        //then
+        verify(deviceService, times(1)).findBySerialNo(anyString());
+    }
 }

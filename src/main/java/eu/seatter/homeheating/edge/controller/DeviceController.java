@@ -46,24 +46,35 @@ public class DeviceController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/{serialno}", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "/{id}", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
-    public DeviceCommand getDeviceBySerialNumber(@PathVariable String serialno) {
-        Device foundDevice =  deviceService.findBySerialNo(serialno).orElseThrow(() ->
-                new DeviceNotFoundException("Device with SN " + serialno + " not found",
-                        "Verify the Serial Number is correct and the device is registered with the system."));
-        DeviceCommand deviceCommand = converter.convert(foundDevice);
-        return deviceCommand;
+    public DeviceCommand getDeviceBySerialNumber(@PathVariable Long id) {
+        log.debug("Entered getDeviceBySerialNumber, id=" + id);
+        Device foundDevice =  deviceService.findById(id).orElseThrow(() ->
+                new DeviceNotFoundException("Device with ID " + id + " not found",
+                        "Verify the ID is correct and the device is registered with the system."));
+        return converter.convert(foundDevice);
     }
 
     @GetMapping(value = {"","/"}, params = "name", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public DeviceCommand getDeviceByName(@RequestParam String name) {
+        log.debug("Entered getDeviceByName, name=" + name);
         Device foundDevice = deviceService.findByName(name).orElseThrow(() ->
                 new DeviceNotFoundException("Device with Name " + name + " not found",
                         "Verify the Name is correct and the device is registered with the system."));
 
-        DeviceCommand deviceCommand = converter.convert(foundDevice);
-        return deviceCommand;
+        return converter.convert(foundDevice);
+    }
+
+    @GetMapping(value = {"","/"}, params = "serialno", produces = "application/json;charset=UTF-8")
+    @ResponseStatus(HttpStatus.OK)
+    public DeviceCommand getDeviceBySerialNo(@RequestParam String serialno) {
+        log.debug("Entered getDeviceBySerialNo, serialno=" + serialno);
+        Device foundDevice =  deviceService.findBySerialNo(serialno).orElseThrow(() ->
+                new DeviceNotFoundException("Device with SN " + serialno + " not found",
+                        "Verify the Serial Number is correct and the device is registered with the system."));
+
+        return converter.convert(foundDevice);
     }
 }
