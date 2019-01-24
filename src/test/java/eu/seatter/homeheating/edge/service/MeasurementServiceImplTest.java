@@ -54,13 +54,13 @@ public class MeasurementServiceImplTest {
     @Test
     public void whenFindAllBySensor_thenMeasurementsShouldBeFound() {
         //given
-        List<Measurement> measurementSet = new ArrayList<>();
+        Set<Measurement> measurementSet = new HashSet<>();
         measurementSet.add(Measurement.builder().sensor(returnedSensor).measurementTime(LocalDateTime.now(ZoneOffset.UTC)).value(20.0D).build());
         measurementSet.add(Measurement.builder().sensor(returnedSensor).measurementTime(LocalDateTime.now(ZoneOffset.UTC)).value(21.0D).build());
         when(measurementRepository.findAllBySensor(any(Sensor.class))).thenReturn(measurementSet);
 
         //when
-        List<Measurement> foundMeasurements = measurementService.findAllBySensor(returnedSensor);
+        Set<Measurement> foundMeasurements = measurementService.findAllBySensor(returnedSensor);
 
         assertThat(foundMeasurements.size()).isEqualTo(2);
     }

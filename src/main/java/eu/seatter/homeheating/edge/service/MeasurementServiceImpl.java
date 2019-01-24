@@ -5,9 +5,9 @@ import eu.seatter.homeheating.edge.model.Sensor;
 import eu.seatter.homeheating.edge.repository.MeasurementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,11 +27,14 @@ public class MeasurementServiceImpl implements MeasurementService {
         this.measurementRepository = measurementRepository;
     }
 
-    public List<Measurement> findAllBySensor(Sensor sensor) {
+    @Override
+    @Transactional
+    public Set<Measurement> findAllBySensor(Sensor sensor) {
         return measurementRepository.findAllBySensor(sensor);
     }
 
     @Override
+    @Transactional
     public Set<Measurement> findAll() {
         Set<Measurement> measurementSet = new HashSet<>();
         measurementRepository.findAll().forEach(measurementSet::add);
@@ -39,6 +42,7 @@ public class MeasurementServiceImpl implements MeasurementService {
     }
 
     @Override
+    @Transactional
     public Optional<Measurement> findById(Long id) {
         return measurementRepository.findById(id);
     }

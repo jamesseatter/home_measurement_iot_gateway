@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "measurement")
-public class Measurement extends BaseEntity {
+public class Measurement extends BaseEntity implements Comparable<Measurement>{
 
     @NotNull
     @Column(name = "measurementtime")
@@ -35,4 +35,8 @@ public class Measurement extends BaseEntity {
     @ManyToOne
     private Sensor sensor;
 
+    @Override
+    public int compareTo(Measurement o) {
+        return super.getId().compareTo(o.getId());
+    }
 }

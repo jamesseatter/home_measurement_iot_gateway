@@ -40,6 +40,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @Transactional
     public Set<Device> findAll() {
         Set<Device> devices = new HashSet<>();
         deviceRepository.findAll().forEach(devices::add);

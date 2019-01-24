@@ -32,6 +32,7 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
+    @Transactional
     public Optional<Sensor> findBySensorId(String sensorId) {
         return sensorRepository.findBySensorId(sensorId);
     }
@@ -57,6 +58,7 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
+    @Transactional
     public Set<Sensor> findAll() {
         Set<Sensor> sensors = new HashSet<>();
         sensorRepository.findAll().forEach(sensors::add);
