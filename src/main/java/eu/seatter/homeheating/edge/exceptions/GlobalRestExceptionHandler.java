@@ -34,17 +34,37 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({DeviceNotFoundException.class,SensorNotFoundException.class})
-    protected ResponseEntity<Object> handleCustomAPIException(DeviceNotFoundException ex) {
-        log.error("Exception:" + ex.getLocalizedMessage());
+    @ExceptionHandler({DeviceNotFoundException.class})
+    protected ResponseEntity<Object> handleDeviceNotFoundException(DeviceNotFoundException ex) {
+        return getObjectResponseEntity(ex.getLocalizedMessage(), ex.getDetail(), ex);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({SensorNotFoundException.class})
+    protected ResponseEntity<Object> handleSensorNotFoundException(SensorNotFoundException ex) {
+        return getObjectResponseEntity(ex.getLocalizedMessage(), ex.getDetail(), ex);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({MeasurementNotSavedException.class})
+    protected ResponseEntity<Object> handleMeasurementNotSavedException(MeasurementNotSavedException ex) {
+        return getObjectResponseEntity(ex.getLocalizedMessage(), ex.getDetail(), ex);
+    }
+
+    private ResponseEntity<Object> getObjectResponseEntity(String localizedMessage, String detail, RuntimeException ex) {
+        log.error("Exception:" + localizedMessage);
         ApiErrorResponse response =new ApiErrorResponse.ApiErrorResponseBuilder()
                 .withStatus(HttpStatus.NOT_FOUND)
                 .withError_code(HttpStatus.NOT_FOUND.name())
-                .withMessage(ex.getLocalizedMessage())
-                .withDetail(ex.getDetail())
+                .withMessage(localizedMessage)
+                .withDetail(detail)
                 .build();
         return new ResponseEntity<>(response, response.getStatus());
     }
+
+
+    ////////////////// SPRING EXCEPTIONS //////////////////
+
 
     @Override
     @ExceptionHandler({MethodArgumentTypeMismatchException.class})

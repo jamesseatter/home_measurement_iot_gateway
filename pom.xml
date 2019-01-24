@@ -72,16 +72,6 @@
 		<!--</dependency>-->
 	</dependencies>
 
-	<servlet>
-		<servlet-name>api</servlet-name>
-		<servlet-class>
-			org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>throwExceptionIfNoHandlerFound</param-name>
-			<param-value>true</param-value>
-		</init-param>
-	</servlet>
-
 	<build>
 		<plugins>
 			<plugin>

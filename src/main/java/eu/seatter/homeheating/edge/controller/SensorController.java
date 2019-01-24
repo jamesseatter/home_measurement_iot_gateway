@@ -2,8 +2,10 @@ package eu.seatter.homeheating.edge.controller;
 
 import eu.seatter.homeheating.edge.commands.MeasurementCommand;
 import eu.seatter.homeheating.edge.commands.SensorCommand;
+import eu.seatter.homeheating.edge.converters.MeasurementCommandToMeasurement;
 import eu.seatter.homeheating.edge.converters.MeasurementToMeasurementCommand;
 import eu.seatter.homeheating.edge.converters.SensorToSensorCommand;
+import eu.seatter.homeheating.edge.exceptions.MeasurementNotSavedException;
 import eu.seatter.homeheating.edge.exceptions.SensorNotFoundException;
 import eu.seatter.homeheating.edge.model.Measurement;
 import eu.seatter.homeheating.edge.model.Sensor;
@@ -11,9 +13,11 @@ import eu.seatter.homeheating.edge.service.MeasurementService;
 import eu.seatter.homeheating.edge.service.SensorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,13 +38,15 @@ public class SensorController {
 
     private final SensorToSensorCommand convertSensorToSensorCommand;
 
-    private final MeasurementToMeasurementCommand converterMeasurementToMeasurementCommand;
+    private final MeasurementToMeasurementCommand convertMeasurementToMeasurementCommand;
+    private final MeasurementCommandToMeasurement convertMeasurementCommandToMeasurement;
 
-    public SensorController(SensorService sensorService, MeasurementService measurementService, SensorToSensorCommand convertSensorToSensorCommand, MeasurementToMeasurementCommand converterMeasurementToMeasurementCommand) {
+    public SensorController(SensorService sensorService, MeasurementService measurementService, SensorToSensorCommand convertSensorToSensorCommand, MeasurementToMeasurementCommand convertMeasurementToMeasurementCommand, MeasurementCommandToMeasurement convertMeasurementCommandToMeasurement) {
         this.sensorService = sensorService;
         this.measurementService = measurementService;
         this.convertSensorToSensorCommand = convertSensorToSensorCommand;
-        this.converterMeasurementToMeasurementCommand = converterMeasurementToMeasurementCommand;
+        this.convertMeasurementToMeasurementCommand = convertMeasurementToMeasurementCommand;
+        this.convertMeasurementCommandToMeasurement = convertMeasurementCommandToMeasurement;
     }
 
     @GetMapping(value = {"sensors","sensors/"}, produces = "application/json;charset=UTF-8")
@@ -75,7 +81,29 @@ public class SensorController {
         Set<Measurement> measurements = measurementService.findAllBySensor(foundSensors);
         return measurements.stream()
                 .sorted()
-                .map(converterMeasurementToMeasurementCommand::convert)
+                .map(convertMeasurementToMeasurementCommand::convert)
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/sensor/{id}/measurement", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")
+    @ResponseStatus(HttpStatus.CREATED)
+    @Transactional
+    public MeasurementCommand postSensorMeasurement(@PathVariable Long id,@RequestBody MeasurementCommand newMeasurement) {
+        log.debug("Entered getSensorMeasurements, id=" + id);
+        Sensor sensor = sensorService.findById(id).orElseThrow(() ->
+                new SensorNotFoundException("Sensor with Id " + id + " not found",
+                        "Verify the Id is correct and the Sensor is registered with the system"));
+
+        Measurement measurement = convertMeasurementCommandToMeasurement.convert(newMeasurement);
+        Objects.requireNonNull(measurement).setSensor(sensor);
+
+
+        Measurement savedMeasurement = measurementService.save(measurement).orElseThrow(() ->
+                new MeasurementNotSavedException("The measurement could not be saved for sensor ID " + id,
+                        "Verify all the data is correct in the Posted JSON and try again"));
+
+        sensor.getMeasurements().add(savedMeasurement);
+
+        return convertMeasurementToMeasurementCommand.convert(savedMeasurement);
     }
 }
