@@ -1,7 +1,7 @@
 package eu.seatter.homeheating.edge.converters;
 
 import eu.seatter.homeheating.edge.commands.DeviceCommand;
-import eu.seatter.homeheating.edge.model.Device;
+import eu.seatter.homeheating.edge.commands.RegistrationCommand;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
@@ -9,28 +9,27 @@ import org.springframework.stereotype.Component;
 /**
  * Created by IntelliJ IDEA.
  * User: jas
- * Date: 18/01/2019
- * Time: 23:40
+ * Date: 26/01/2019
+ * Time: 09:56
  */
 @Component
-public class DeviceCommandToDevice implements Converter<DeviceCommand, Device> {
-
+public class RegistrationCommandToDeviceCommand implements Converter<RegistrationCommand, DeviceCommand> {
     @Nullable
     @Override
-    public Device convert(DeviceCommand source) {
+    public DeviceCommand convert(RegistrationCommand source) {
         if (source == null) {
             return null;
         }
 
-        final Device dest = new Device();
+        final DeviceCommand dest = new DeviceCommand();
 
         dest.setId(source.getId());
         dest.setName(source.getName());
-        dest.setSerialNo(source.getSerialNo());
-        dest.setOperatingSystem(source.getOperatingSystem());
         dest.setManufacturer(source.getManufacturer());
+        dest.setOperatingSystem(source.getOperatingSystem());
+        dest.setSerialNo(source.getSerialNo());
         dest.setRegistrationStatus(source.getRegistrationStatus());
-
+        dest.setRegistrationCode(source.getRegistrationCode());
         return dest;
     }
 }

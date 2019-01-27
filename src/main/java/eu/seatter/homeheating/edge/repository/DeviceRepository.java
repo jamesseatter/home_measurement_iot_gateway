@@ -30,4 +30,12 @@ public interface DeviceRepository extends CrudRepository<Device, Long> {
      *          If no device is found, this method returns null.
      */
     Optional<Device> findBySerialNo(String serialNumber);
+
+    /**
+     * Finds single device by its registration code.
+     * @param code the devices registration code
+     * @return A single device with the exact match of the registration code provided.
+     *          If no device is found, this method returns null.
+     */
+    Optional<Device> findByRegistrationCode(String code);
 }

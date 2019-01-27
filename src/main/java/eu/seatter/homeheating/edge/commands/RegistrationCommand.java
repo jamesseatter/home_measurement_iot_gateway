@@ -10,13 +10,14 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by IntelliJ IDEA.
  * User: jas
- * Date: 01/01/2019
- * Time: 13:42
+ * Date: 27/01/2019
+ * Time: 22:50
  */
 @Setter
 @Getter
 @NoArgsConstructor
-public class DeviceCommand{
+public class RegistrationCommand {
+
     private Long id;
     @NotNull
     private String name;
@@ -28,5 +29,4 @@ public class DeviceCommand{
     private String operatingSystem;
     private RegistrationStatus registrationStatus;
     private String registrationCode;
-
 }

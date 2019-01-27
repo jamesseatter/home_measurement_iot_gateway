@@ -1,8 +1,10 @@
 package eu.seatter.homeheating.edge.service;
 
+import eu.seatter.homeheating.edge.commands.DeviceCommand;
+import eu.seatter.homeheating.edge.converters.DeviceCommandToDevice;
 import eu.seatter.homeheating.edge.model.Device;
+import eu.seatter.homeheating.edge.model.RegistrationStatus;
 import eu.seatter.homeheating.edge.repository.DeviceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,16 +23,17 @@ public class DeviceServiceImpl implements DeviceService {
 
     private final DeviceRepository deviceRepository;
 
-    @Autowired
-    public DeviceServiceImpl(DeviceRepository deviceRepository) {
+    private final DeviceCommandToDevice convertDeviceCommandToDevice;
+
+    public DeviceServiceImpl(DeviceRepository deviceRepository, DeviceCommandToDevice convertDeviceCommandToDevice) {
         this.deviceRepository = deviceRepository;
+        this.convertDeviceCommandToDevice = convertDeviceCommandToDevice;
     }
 
     @Override
     @Transactional
     public Optional<Device> findByName(String name) {
-        Optional<Device> foundDevice = deviceRepository.findByName(name);
-        return foundDevice;
+        return deviceRepository.findByName(name);
     }
 
     @Override
@@ -49,12 +52,14 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public Optional<Device> findById(Long id) {
-        return Optional.ofNullable(deviceRepository.findById(id).orElse(new Device()));
+        return Optional.of(deviceRepository.findById(id).orElse(new Device()));
     }
 
     @Override
-    public Optional<Device> save(Device object) {
-        return Optional.ofNullable(deviceRepository.save(object));
+    public Optional<Device> newDevice(DeviceCommand deviceCommand) {
+        Device device = convertDeviceCommandToDevice.convert(deviceCommand);
+        device.setRegistrationStatus(RegistrationStatus.PENDINGAPPROVAL);
+        return Optional.of(device);
     }
 
     @Override
@@ -65,5 +70,10 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public void deleteById(Long id) {
         deviceRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Device> save(Device object) {
+        return Optional.empty();
     }
 }

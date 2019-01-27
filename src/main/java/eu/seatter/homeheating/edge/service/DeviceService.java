@@ -1,5 +1,6 @@
 package eu.seatter.homeheating.edge.service;
 
+import eu.seatter.homeheating.edge.commands.DeviceCommand;
 import eu.seatter.homeheating.edge.model.Device;
 
 import java.util.Optional;
@@ -14,5 +15,5 @@ public interface DeviceService extends CrudService<Device, Long>{
 
     Optional<Device> findByName(String name);
     Optional<Device> findBySerialNo(String serialNo);
-
+    Optional<Device> newDevice(DeviceCommand deviceCommand);
 }

@@ -43,6 +43,13 @@ public class Device extends BaseEntity implements Comparable<Device> {
     @Column(name = "operatingsystem")
     private String operatingSystem;
 
+    @Column(name = "registrationstatus")
+    @Enumerated(value = EnumType.STRING)
+    private RegistrationStatus registrationStatus = RegistrationStatus.NOTREGISTERED;
+
+    @Column(name = "registrationcode")
+    private String registrationCode;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "device", orphanRemoval = true)
     private Set<Sensor> sensors = new HashSet<>();
 

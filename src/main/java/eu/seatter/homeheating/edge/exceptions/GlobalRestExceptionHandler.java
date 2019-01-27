@@ -73,7 +73,8 @@ public class GlobalRestExceptionHandler extends ResponseEntityExceptionHandler {
         ApiErrorResponse response =new ApiErrorResponse.ApiErrorResponseBuilder()
                 .withStatus(status)
                 .withError_code(HttpStatus.BAD_REQUEST.name())
-                .withMessage(ex.getLocalizedMessage())
+                .withMessage("Input validation failed")
+                .withDetail(ex.getLocalizedMessage())
                 .build();
 
         return new ResponseEntity<>(response, response.getStatus());
