@@ -71,12 +71,12 @@
 //        log.info("Loading Complete");
 //    }
 //
-//    private Device addDevice(String name, String serialNo) {
+//    private Device addDevice(String name, String uniqueId) {
 //        try { TimeUnit.MILLISECONDS.sleep(500); } catch (InterruptedException ex) {System.out.println(ex.getMessage());}
 //        Device device = Device.builder()
 //                .name(name)
 //                .manufacturer("pi")
-//                .serialNo(serialNo)
+//                .uniqueId(uniqueId)
 //                .operatingSystem("Raspberian").build();
 //        return deviceService.save(device).orElse(new Device());
 //    }

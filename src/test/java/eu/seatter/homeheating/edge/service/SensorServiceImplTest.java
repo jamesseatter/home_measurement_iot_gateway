@@ -46,7 +46,7 @@ public class SensorServiceImplTest {
 
     @Before
     public void setUp(){
-        returnedDevice = Device.builder().name("pi3n1").manufacturer("pi").serialNo("112233").operatingSystem("raspberian").build();
+        returnedDevice = Device.builder().name("pi3n1").manufacturer("pi").uniqueId("112233").operatingSystem("raspberian").build();
         returnedSensor = Sensor.builder().sensorId("123456").active(true).sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build();
     }
 
@@ -141,7 +141,7 @@ public class SensorServiceImplTest {
     @Test
     public void givenNewSensor_whenAddNew_thenReturnSensorandUpdateDevice() {
         //given
-        when(deviceService.findBySerialNo(anyString())).thenReturn(Optional.of(returnedDevice));
+        when(deviceService.findByUniqueId(anyString())).thenReturn(Optional.of(returnedDevice));
         when(sensorRepository.save(any(Sensor.class))).thenReturn(returnedSensor);
 
         //when
@@ -155,7 +155,7 @@ public class SensorServiceImplTest {
         //then
         assertThat(newSensor.getSensorId()).isEqualTo(returnedSensor.getSensorId());
         verify(sensorRepository,times(1)).save(any());
-        verify(deviceService,times(1)).findBySerialNo(any());
+        verify(deviceService,times(1)).findByUniqueId(any());
     }
 
 }

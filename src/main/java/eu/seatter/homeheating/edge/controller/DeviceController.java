@@ -60,8 +60,8 @@ public class DeviceController {
 
     @GetMapping(value = "device/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public DeviceCommand getDeviceBySerialNumber(@PathVariable Long id) {
-        log.debug("Entered getDeviceBySerialNumber, id=" + id);
+    public DeviceCommand getDeviceById(@PathVariable Long id) {
+        log.debug("Entered getDeviceById, id=" + id);
         Device foundDevice =  deviceService.findById(id).orElseThrow(() ->
                 new DeviceNotFoundException("Device with ID " + id + " not found",
                         "Verify the ID is correct and the device is registered with the system."));
@@ -79,13 +79,13 @@ public class DeviceController {
         return converterDeviceToDeviceCommand.convert(foundDevice);
     }
 
-    @GetMapping(value = {"device","device/"}, params = "serialno")
+    @GetMapping(value = {"device","device/"}, params = "uniqueid")
     @ResponseStatus(HttpStatus.OK)
-    public DeviceCommand getDeviceBySerialNo(@RequestParam String serialno) {
-        log.debug("Entered getDeviceBySerialNo, serialno=" + serialno);
-        Device foundDevice =  deviceService.findBySerialNo(serialno).orElseThrow(() ->
-                new DeviceNotFoundException("Device with SN " + serialno + " not found",
-                        "Verify the Serial Number is correct and the device is registered with the system."));
+    public DeviceCommand getDeviceByUniqueId(@RequestParam String uniqueid) {
+        log.debug("Entered getDeviceByUniqueId, uniqueid = " + uniqueid);
+        Device foundDevice =  deviceService.findByUniqueId(uniqueid).orElseThrow(() ->
+                new DeviceNotFoundException("Device with unique ID " + uniqueid + " not found",
+                        "Verify the Unique ID is correct and the device is registered with the system."));
 
         return converterDeviceToDeviceCommand.convert(foundDevice);
     }

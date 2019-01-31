@@ -30,8 +30,8 @@ public class Device extends BaseEntity implements Comparable<Device> {
 
     @NotNull
     @Size(max = 50)
-    @Column(name = "serialno")
-    private String serialNo;
+    @Column(name = "uniqueid")
+    private String uniqueId;
 
     @NotNull
     @Size(max = 50)

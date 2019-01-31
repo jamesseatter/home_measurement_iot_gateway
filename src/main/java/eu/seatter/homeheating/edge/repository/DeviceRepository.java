@@ -24,12 +24,12 @@ public interface DeviceRepository extends CrudRepository<Device, Long> {
     Optional<Device> findByName(String deviceName);
 
     /**
-     * Finds single device by using the device serial number as a search criteria.
-     * @param serialNumber the serial number of the device
-     * @return  A single device with the exact match of the serial number provided.
+     * Finds single device by using the device unique id as a search criteria.
+     * @param uniqueId the unique ID of the device
+     * @return  A single device with the exact match of the unique id provided.
      *          If no device is found, this method returns null.
      */
-    Optional<Device> findBySerialNo(String serialNumber);
+    Optional<Device> findByUniqueId(String uniqueId);
 
     /**
      * Finds single device by its registration code.

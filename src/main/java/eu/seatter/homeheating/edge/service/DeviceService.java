@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface DeviceService extends CrudService<Device, Long>{
 
     Optional<Device> findByName(String name);
-    Optional<Device> findBySerialNo(String serialNo);
+    Optional<Device> findByUniqueId(String uniqueId);
     Optional<Device> newDevice(DeviceCommand deviceCommand);
 }

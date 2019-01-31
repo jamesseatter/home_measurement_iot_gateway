@@ -39,7 +39,7 @@ public class MeasurementRepositoryTest {
         device = new Device();
         device.setName("Dev1");
         device.setManufacturer("Pi");
-        device.setSerialNo("12345");
+        device.setUniqueId("12345");
         device.setOperatingSystem("Raspberian");
         entityManager.persist(device);
         entityManager.flush();

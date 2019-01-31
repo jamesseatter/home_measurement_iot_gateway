@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class DeviceToDeviceCommandTest {
     private static final Long ID_VALUE = 1L;
     private static final String NAME_VALUE = "pi3n1";
-    private static final String SERIALNO_VALUE = "dd7625242";
+    private static final String UNIQUEID_VALUE = "dd7625242";
     private static final String MANUFACTURER_VALUE = "pi";
     private static final String OPERATINGSYSTEM_VALUE = "Raspberian";
 
@@ -42,7 +42,7 @@ public class DeviceToDeviceCommandTest {
         //given
         Device device = new Device();
         device.setId(ID_VALUE);
-        device.setSerialNo(SERIALNO_VALUE);
+        device.setUniqueId(UNIQUEID_VALUE);
         device.setName(NAME_VALUE);
         device.setManufacturer(MANUFACTURER_VALUE);
         device.setOperatingSystem(OPERATINGSYSTEM_VALUE);
@@ -53,7 +53,7 @@ public class DeviceToDeviceCommandTest {
         //then
         assertNotNull(device);
         assertEquals(ID_VALUE, deviceCommand.getId());
-        assertEquals(SERIALNO_VALUE, deviceCommand.getSerialNo());
+        assertEquals(UNIQUEID_VALUE, deviceCommand.getUniqueId());
         assertEquals(NAME_VALUE, deviceCommand.getName());
         assertEquals(MANUFACTURER_VALUE, deviceCommand.getManufacturer());
         assertEquals(OPERATINGSYSTEM_VALUE, deviceCommand.getOperatingSystem());

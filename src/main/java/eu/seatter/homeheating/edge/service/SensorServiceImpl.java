@@ -40,9 +40,9 @@ public class SensorServiceImpl implements SensorService {
     @Override
     public Sensor addSensor(String sensorId, SensorType sensorType, SensorValueType valueType, SensorValueUnit valueUnit, boolean active, Device device) {
 
-        Device deviceInDB = deviceService.findBySerialNo(device.getSerialNo()).orElseThrow(() ->
-                new DeviceNotFoundException("Device with SN " + device.getSerialNo() + " not found",
-                        "Verify the Serial Number is correct and the device is registered with the system."));
+        Device deviceInDB = deviceService.findByUniqueId(device.getUniqueId()).orElseThrow(() ->
+                new DeviceNotFoundException("Device with Unique ID " + device.getUniqueId() + " not found",
+                        "Verify the Unique ID is correct and the device is registered with the system."));
 
         Sensor sensor = new Sensor();
         sensor.setActive(active);

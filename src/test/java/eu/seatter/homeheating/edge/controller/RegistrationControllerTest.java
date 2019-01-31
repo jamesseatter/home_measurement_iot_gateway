@@ -57,14 +57,14 @@ public class RegistrationControllerTest {
         device = new Device();
         device.setName("DevNEW");
         device.setManufacturer("Pi");
-        device.setSerialNo("12345");
+        device.setUniqueId("12345");
         device.setOperatingSystem("Raspberian");
         device.setRegistrationStatus(RegistrationStatus.PENDINGAPPROVAL);
 
         registrationCommand = new RegistrationCommand();
         registrationCommand.setName("DevNEW");
         registrationCommand.setManufacturer("Pi");
-        registrationCommand.setSerialNo("12345");
+        registrationCommand.setUniqueId("12345");
         registrationCommand.setOperatingSystem("Raspberian");
         registrationCommand.setRegistrationStatus(RegistrationStatus.PENDINGAPPROVAL);
 

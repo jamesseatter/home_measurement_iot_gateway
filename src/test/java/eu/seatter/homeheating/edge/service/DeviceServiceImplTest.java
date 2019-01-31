@@ -39,7 +39,7 @@ public class DeviceServiceImplTest {
 
     @Before
     public void setUp() {
-        returnedDevice = Device.builder().name("pi3n1").manufacturer("pi").serialNo("112233").operatingSystem("raspberian").build();
+        returnedDevice = Device.builder().name("pi3n1").manufacturer("pi").uniqueId("112233").operatingSystem("raspberian").build();
     }
 
     @Test
@@ -70,8 +70,8 @@ public class DeviceServiceImplTest {
     public void whenFindAll_thenDevicesShouldBeFound() {
         //given
         Set<Device> deviceSet = new HashSet<>();
-        deviceSet.add(Device.builder().name("pi3n1").manufacturer("pi").serialNo("112233").operatingSystem("raspberian").build());
-        deviceSet.add(Device.builder().name("pi3n2").manufacturer("pi").serialNo("998877").operatingSystem("raspberian").build());
+        deviceSet.add(Device.builder().name("pi3n1").manufacturer("pi").uniqueId("112233").operatingSystem("raspberian").build());
+        deviceSet.add(Device.builder().name("pi3n2").manufacturer("pi").uniqueId("998877").operatingSystem("raspberian").build());
         when(deviceRepository.findAll()).thenReturn(deviceSet);
 
         //when
@@ -108,27 +108,27 @@ public class DeviceServiceImplTest {
     }
 
     @Test
-    public void whenFindBySerialNo_thenDeviceShouldBeFound() {
+    public void whenFindByUniqueID_thenDeviceShouldBeFound() {
         //given
-        when(deviceRepository.findBySerialNo(anyString())).thenReturn(Optional.of(returnedDevice));
+        when(deviceRepository.findByUniqueId(anyString())).thenReturn(Optional.of(returnedDevice));
 
         //when
-        Device foundDevice = deviceService.findBySerialNo(returnedDevice.getSerialNo()).orElse(new Device());
+        Device foundDevice = deviceService.findByUniqueId(returnedDevice.getUniqueId()).orElse(new Device());
 
         //then
-        assertThat(foundDevice.getSerialNo()).isEqualTo(returnedDevice.getSerialNo());
+        assertThat(foundDevice.getUniqueId()).isEqualTo(returnedDevice.getUniqueId());
     }
 
     @Test
-    public void whenFindByBadSerialNo_thenDeviceShouldNotBeFound() {
+    public void whenFindByBadUniqueID_thenDeviceShouldNotBeFound() {
         //given
-        when(deviceRepository.findBySerialNo(anyString())).thenReturn(Optional.empty());
+        when(deviceRepository.findByUniqueId(anyString())).thenReturn(Optional.empty());
 
         //when
-        Device foundDevice = deviceService.findBySerialNo("BADSN").orElse(new Device());
+        Device foundDevice = deviceService.findByUniqueId("BADUID").orElse(new Device());
 
         //then
-        assertThat(foundDevice.getSerialNo()).isNull();
+        assertThat(foundDevice.getUniqueId()).isNull();
     }
 
 

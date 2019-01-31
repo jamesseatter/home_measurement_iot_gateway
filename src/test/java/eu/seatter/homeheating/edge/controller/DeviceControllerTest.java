@@ -55,7 +55,7 @@ public class DeviceControllerTest {
         device.setId(1L);
         device.setName("Dev1");
         device.setManufacturer("Pi");
-        device.setSerialNo("12345");
+        device.setUniqueId("12345");
         device.setOperatingSystem("Raspberian");
 
         given(deviceService.findById(anyLong())).willReturn(Optional.of(device));
@@ -65,7 +65,7 @@ public class DeviceControllerTest {
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(jsonPath("$.id").value(device.getId()))
-                .andExpect(jsonPath("$.serialNo").value(device.getSerialNo()))
+                .andExpect(jsonPath("$.uniqueId").value(device.getUniqueId()))
                 .andExpect(jsonPath("$.manufacturer").value(device.getManufacturer()))
                 .andExpect(jsonPath("$.name").value(device.getName()))
                 .andExpect(jsonPath("$.operatingSystem").value(device.getOperatingSystem()));
@@ -103,14 +103,14 @@ public class DeviceControllerTest {
         device.setId(1L);
         device.setName("Dev1");
         device.setManufacturer("Pi");
-        device.setSerialNo("12345");
+        device.setUniqueId("12345");
         device.setOperatingSystem("Raspberian");
 
         Device device2 = new Device();
         device2.setId(2L);
         device2.setName("Dev2");
         device2.setManufacturer("Pi");
-        device2.setSerialNo("22334455");
+        device2.setUniqueId("22334455");
         device2.setOperatingSystem("Raspberian");
 
         deviceSet.add(device);
@@ -124,11 +124,11 @@ public class DeviceControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$",hasSize(2)))
-                .andExpect(jsonPath("$[0].serialNo").value(device.getSerialNo()))
+                .andExpect(jsonPath("$[0].uniqueId").value(device.getUniqueId()))
                 .andExpect(jsonPath("$[0].manufacturer").value(device.getManufacturer()))
                 .andExpect(jsonPath("$[0].name").value(device.getName()))
                 .andExpect(jsonPath("$[0].operatingSystem").value(device.getOperatingSystem()))
-                .andExpect(jsonPath("$[1].serialNo").value(device2.getSerialNo()))
+                .andExpect(jsonPath("$[1].uniqueId").value(device2.getUniqueId()))
                 .andExpect(jsonPath("$[1].manufacturer").value(device2.getManufacturer()))
                 .andExpect(jsonPath("$[1].name").value(device2.getName()))
                 .andExpect(jsonPath("$[1].operatingSystem").value(device2.getOperatingSystem()));
@@ -143,7 +143,7 @@ public class DeviceControllerTest {
         Device device = new Device();
         device.setName("Dev1");
         device.setManufacturer("Pi");
-        device.setSerialNo("12345");
+        device.setUniqueId("12345");
         device.setOperatingSystem("Raspberian");
 
         given(deviceService.findByName(device.getName())).willReturn(Optional.of(device));
@@ -152,7 +152,7 @@ public class DeviceControllerTest {
         this.mockMvc.perform(get("/api/v1/device").param("name",device.getName()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.serialNo").value(device.getSerialNo()))
+                .andExpect(jsonPath("$.uniqueId").value(device.getUniqueId()))
                 .andExpect(jsonPath("$.manufacturer").value(device.getManufacturer()))
                 .andExpect(jsonPath("$.name").value(device.getName()))
                 .andExpect(jsonPath("$.operatingSystem").value(device.getOperatingSystem()));
@@ -183,39 +183,39 @@ public class DeviceControllerTest {
     }
 
     @Test
-    public void whenGetDeviceBySerialNo_thenShouldReturnDeviceAsJSON() throws Exception {
+    public void whenGetDeviceByUniqueID_thenShouldReturnDeviceAsJSON() throws Exception {
         //given
         Device device = new Device();
         device.setName("Dev1");
         device.setManufacturer("Pi");
-        device.setSerialNo("12345");
+        device.setUniqueId("12345");
         device.setOperatingSystem("Raspberian");
 
-        given(deviceService.findBySerialNo(device.getSerialNo())).willReturn(Optional.of(device));
+        given(deviceService.findByUniqueId(device.getUniqueId())).willReturn(Optional.of(device));
 
         //when
-        this.mockMvc.perform(get("/api/v1/device").param("serialno", device.getSerialNo()).contentType(MediaType.APPLICATION_JSON))
+        this.mockMvc.perform(get("/api/v1/device").param("uniqueid", device.getUniqueId()).contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.serialNo").value(device.getSerialNo()))
+                .andExpect(jsonPath("$.uniqueId").value(device.getUniqueId()))
                 .andExpect(jsonPath("$.manufacturer").value(device.getManufacturer()))
                 .andExpect(jsonPath("$.name").value(device.getName()))
                 .andExpect(jsonPath("$.operatingSystem").value(device.getOperatingSystem()));
 
         //then
-        verify(deviceService, times(1)).findBySerialNo(anyString());
+        verify(deviceService, times(1)).findByUniqueId(anyString());
     }
 
     @Test
-    public void whenGetDeviceBySerialNoBADValue_thenShouldReturn404DeviceNotFoundAsJSON() throws Exception{
+    public void whenGetDeviceByUniqueIDBADValue_thenShouldReturn404DeviceNotFoundAsJSON() throws Exception{
         //given
-        String serialNo = "999999999";
-        String message = "Device with SN " + serialNo + " not found";
-        String detail = "Verify the Serial Number is correct and the device is registered with the system.";
-        when(deviceService.findBySerialNo(anyString())).thenThrow(new DeviceNotFoundException(message, detail));
+        String uniqueId = "999999999";
+        String message = "Device with Uniqie ID " + uniqueId + " not found";
+        String detail = "Verify the Unique ID is correct and the device is registered with the system.";
+        when(deviceService.findByUniqueId(anyString())).thenThrow(new DeviceNotFoundException(message, detail));
 
         //when
-        this.mockMvc.perform(get("/api/v1/device/").param("serialno",serialNo))
+        this.mockMvc.perform(get("/api/v1/device/").param("uniqueid",uniqueId))
                 .andDo(print())
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andExpect(jsonPath("$.status" ).value("NOT_FOUND"))
@@ -224,7 +224,7 @@ public class DeviceControllerTest {
                 .andExpect(jsonPath("$.detail" ).value(detail));
 
         //then
-        verify(deviceService, times(1)).findBySerialNo(anyString());
+        verify(deviceService, times(1)).findByUniqueId(anyString());
     }
 
     @Test
@@ -235,7 +235,7 @@ public class DeviceControllerTest {
         device.setId(1L);
         device.setName("Dev1");
         device.setManufacturer("Pi");
-        device.setSerialNo("12345");
+        device.setUniqueId("12345");
         device.setOperatingSystem("Raspberian");
 
         Set<Sensor> sensorSet = new HashSet<>();

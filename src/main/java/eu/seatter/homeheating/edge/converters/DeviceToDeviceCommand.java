@@ -25,7 +25,7 @@ public class DeviceToDeviceCommand implements Converter<Device, DeviceCommand> {
 
         dest.setId(source.getId());
         dest.setName(source.getName());
-        dest.setSerialNo(source.getSerialNo());
+        dest.setUniqueId(source.getUniqueId());
         dest.setOperatingSystem(source.getOperatingSystem());
         dest.setManufacturer(source.getManufacturer());
 

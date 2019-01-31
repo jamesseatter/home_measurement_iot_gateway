@@ -1,8 +1,8 @@
-INSERT INTO device (id, name, serialno,manufacturer, operatingsystem, registrationstatus) VALUES (1,'pi3n1','1234','Raspberry','Raspbian', 'NOTREGISTERED')
-INSERT INTO device (id, name, serialno,manufacturer, operatingsystem, registrationstatus) VALUES (2,'pi3n2','2345','Raspberry','Raspbian', 'PENDINGAPPROVAL')
-INSERT INTO device (id, name, serialno,manufacturer, operatingsystem, registrationstatus, registrationcode) VALUES (3,'pi3n3','3456','Raspberry','Raspbian', 'REGISTERED', '29s756431s1441')
-INSERT INTO device (id, name, serialno,manufacturer, operatingsystem, registrationstatus, registrationcode) VALUES (4,'pi3n4','4567','Raspberry','Raspbian', 'REGISTERED', '29s756431s1442')
-INSERT INTO device (id, name, serialno,manufacturer, operatingsystem, registrationstatus, registrationcode) VALUES (5,'pi3n5','5678','Raspberry','Raspbian', 'REGISTERED', '29s756431s1443')
+INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus) VALUES (1,'pi3n1','1234','Raspberry','Raspbian', 'NOTREGISTERED')
+INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus) VALUES (2,'pi3n2','2345','Raspberry','Raspbian', 'PENDINGAPPROVAL')
+INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus, registrationcode) VALUES (3,'pi3n3','3456','Raspberry','Raspbian', 'REGISTERED', '29s756431s1441')
+INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus, registrationcode) VALUES (4,'pi3n4','4567','Raspberry','Raspbian', 'REGISTERED', '29s756431s1442')
+INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus, registrationcode) VALUES (5,'pi3n5','5678','Raspberry','Raspbian', 'REGISTERED', '29s756431s1443')
 
 INSERT INTO sensor (id, sensorid, sensortype, valuetype, valueunit, dateadded, datemodified, active, device_id) VALUES (1,'11111111','ONEWIRE','TEMPERATURE','CELSIUS',parsedatetime('17-01-2019 18:47:52.690', 'dd-MM-yyyy hh:mm:ss.SS'),parsedatetime('17-01-2019 18:47:52.690', 'dd-MM-yyyy hh:mm:ss.SS'),'TRUE',1)
 INSERT INTO sensor (id, sensorid, sensortype, valuetype, valueunit, dateadded, datemodified, active, device_id) VALUES (2,'22222222','ONEWIRE','TEMPERATURE','CELSIUS',parsedatetime('17-01-2019 18:47:52.690', 'dd-MM-yyyy hh:mm:ss.SS'),parsedatetime('17-01-2019 18:47:52.690', 'dd-MM-yyyy hh:mm:ss.SS'),'TRUE',1)

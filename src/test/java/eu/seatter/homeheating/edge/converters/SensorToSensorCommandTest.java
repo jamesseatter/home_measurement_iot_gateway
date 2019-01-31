@@ -34,7 +34,7 @@ public class SensorToSensorCommandTest {
     private SensorToSensorCommand converter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         converter = new SensorToSensorCommand(new DeviceToDeviceCommand());
     }
 
@@ -94,7 +94,7 @@ public class SensorToSensorCommandTest {
 
         Device device = new Device();
         device.setId(ID_VALUE);
-        device.setSerialNo(SERIALNO_VALUE);
+        device.setUniqueId(SERIALNO_VALUE);
         device.setName(NAME_VALUE);
         device.setManufacturer(MANUFACTURER_VALUE);
         device.setOperatingSystem(OPERATINGSYSTEM_VALUE);

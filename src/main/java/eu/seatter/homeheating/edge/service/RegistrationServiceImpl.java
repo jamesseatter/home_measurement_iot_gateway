@@ -29,7 +29,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public Optional<Device> newDevice(RegistrationCommand registrationCommand) {
-        Optional<Device> deviceInDB = deviceService.findBySerialNo(registrationCommand.getSerialNo());
+        Optional<Device> deviceInDB = deviceService.findByUniqueId(registrationCommand.getUniqueId());
         if(deviceInDB.isPresent()) {
             return deviceInDB;
         } else {
@@ -41,6 +41,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public Optional<Device> getRegistration(RegistrationCommand registrationCommand) {
 
-        return deviceService.findBySerialNo(registrationCommand.getSerialNo());
+        return deviceService.findByUniqueId(registrationCommand.getUniqueId());
     }
 }

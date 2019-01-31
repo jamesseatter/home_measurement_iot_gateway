@@ -10,8 +10,8 @@ public class HomeHeatingIotEdgeApplication {
 
 	public static void main(String[] args) {
 		log.info("Application startup");
-		SpringApplication.run(HomeHeatingIotEdgeApplication.class, args);
-		log.info("Application shutdown");
+		SpringApplication.run(HomeHeatingIotEdgeApplication.class, args).close();
+
 	}
 
 }

@@ -38,8 +38,8 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     @Transactional
-    public Optional<Device> findBySerialNo(String serialNo) {
-        return deviceRepository.findBySerialNo(serialNo);
+    public Optional<Device> findByUniqueId(String uniqueId) {
+        return deviceRepository.findByUniqueId(uniqueId);
     }
 
     @Override

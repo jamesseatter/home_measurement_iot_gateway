@@ -28,14 +28,14 @@ public class SensorCommandToSensorTest {
     private Boolean ACTIVE_VALUE = true;
 
     private static final String NAME_VALUE = "pi3n1";
-    private static final String SERIALNO_VALUE = "dd7625242";
+    private static final String UNIQUEID_VALUE = "dd7625242";
     private static final String MANUFACTURER_VALUE = "pi";
     private static final String OPERATINGSYSTEM_VALUE = "Raspberian";
 
     private SensorCommandToSensor converter;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         converter = new SensorCommandToSensor(new DeviceCommandToDevice());
     }
 
@@ -85,7 +85,7 @@ public class SensorCommandToSensorTest {
         //given
         DeviceCommand deviceCommand = new DeviceCommand();
         deviceCommand.setId(ID_VALUE);
-        deviceCommand.setSerialNo(SERIALNO_VALUE);
+        deviceCommand.setUniqueId(UNIQUEID_VALUE);
         deviceCommand.setName(NAME_VALUE);
         deviceCommand.setManufacturer(MANUFACTURER_VALUE);
         deviceCommand.setOperatingSystem(OPERATINGSYSTEM_VALUE);

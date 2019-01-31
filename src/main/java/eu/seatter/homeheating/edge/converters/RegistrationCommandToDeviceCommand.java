@@ -27,7 +27,7 @@ public class RegistrationCommandToDeviceCommand implements Converter<Registratio
         dest.setName(source.getName());
         dest.setManufacturer(source.getManufacturer());
         dest.setOperatingSystem(source.getOperatingSystem());
-        dest.setSerialNo(source.getSerialNo());
+        dest.setUniqueId(source.getUniqueId());
         dest.setRegistrationStatus(source.getRegistrationStatus());
         dest.setRegistrationCode(source.getRegistrationCode());
         return dest;

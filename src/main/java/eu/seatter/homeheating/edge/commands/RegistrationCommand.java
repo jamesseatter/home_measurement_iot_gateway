@@ -22,7 +22,7 @@ public class RegistrationCommand {
     @NotNull
     private String name;
     @NotNull
-    private String serialNo;
+    private String uniqueId;
     @NotNull
     private String manufacturer;
     @NotNull

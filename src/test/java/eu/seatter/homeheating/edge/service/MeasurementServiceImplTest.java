@@ -46,7 +46,7 @@ public class MeasurementServiceImplTest {
 
     @Before
     public void setUp() {
-        returnedDevice = Device.builder().name("pi3n1").manufacturer("pi").serialNo("112233").operatingSystem("raspberian").build();
+        returnedDevice = Device.builder().name("pi3n1").manufacturer("pi").uniqueId("112233").operatingSystem("raspberian").build();
         returnedSensor = Sensor.builder().sensorId("123456").sensorType(SensorType.ONEWIRE).valueType(SensorValueType.TEMPERATURE).valueUnit(SensorValueUnit.CELSIUS).device(returnedDevice).build();
         returnedMeasurement = Measurement.builder().sensor(returnedSensor).measurementTime(LocalDateTime.now(ZoneOffset.UTC)).value(20.0D).build();
     }
