@@ -39,9 +39,9 @@ public class RegistrationController {
         return convertDeviceToRegistrationCommand.convert(device);
     }
 
-    @RequestMapping(value = "/device")
-    public RegistrationCommand getDeviceRegistration(@Validated @RequestBody RegistrationCommand registrationCommand) {
-        Device device = registrationService.getRegistration(registrationCommand).orElseGet(Device::new);
+    @PostMapping(value = {"device","device"}, consumes = "text/plain;charset=UTF-8")
+    public RegistrationCommand getDeviceRegistration(@RequestBody String uniqueId) {
+        Device device = registrationService.getRegistration(uniqueId).orElseGet(Device::new);
         return convertDeviceToRegistrationCommand.convert(device);
     }
 }

@@ -14,6 +14,6 @@ import java.util.Optional;
 public interface RegistrationService {
     Optional<Device> newDevice(RegistrationCommand registrationCommand);
 
-    Optional<Device> getRegistration(RegistrationCommand registrationCommand);
+    Optional<Device> getRegistration(String uniqueId);
 
 }

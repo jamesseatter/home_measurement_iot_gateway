@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -106,31 +107,31 @@ public class RegistrationControllerTest {
     @Test
     public void whenGetRegistrationGood_thenShouldReturnRegistrationCommandHttpStatusOK() throws Exception {
         //given
-        given(registrationService.getRegistration(any(RegistrationCommand.class))).willReturn(Optional.of(device));
+        given(registrationService.getRegistration(anyString())).willReturn(Optional.of(device));
 
         //when
         this.mockMvc.perform(post("/api/v1/registration/device")
-                                .contentType("application/json;charset=UTF-8")
-                                .content(asJsonString(registrationCommand)))
+                            .contentType("text/plain;charset=UTF-8")
+                            .content("+4UKP+JdIfG6vvbYtmk9nL+bPFGEiJ11/159suwMso0="))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(device.getName()))
                 .andExpect(jsonPath("$.registrationStatus").value("PENDINGAPPROVAL"));
         //then
-        verify(registrationService,times(1)).getRegistration(any(RegistrationCommand.class));
+        verify(registrationService,times(1)).getRegistration(anyString());
     }
 
     @Test
-    public void whenGetRegistrationBadJSONInput_thenShouldReturnMethodArgumentNotValidException() throws Exception {
+    public void whenGetRegistrationJSONInput_thenShouldReturnUnsupportedMediaTypeException() throws Exception {
         //given
         RegistrationCommand badrc = new RegistrationCommand(); //any incomplete RegistrationCommand is an exception.
 
-        given(registrationService.getRegistration(any(RegistrationCommand.class))).willReturn(Optional.of(device));
+        given(registrationService.getRegistration(anyString())).willReturn(Optional.of(device));
 
         //when
         this.mockMvc.perform(post("/api/v1/registration/device")
                                 .contentType("application/json;charset=UTF-8")
-                                .content(asJsonString(badrc)))
-                .andExpect(status().isBadRequest());
+                                )
+                .andExpect(status().isUnsupportedMediaType());
 
         //then
         verify(registrationService,times(0)).newDevice(any(RegistrationCommand.class));

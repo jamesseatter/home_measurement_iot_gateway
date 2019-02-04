@@ -39,8 +39,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    public Optional<Device> getRegistration(RegistrationCommand registrationCommand) {
+    public Optional<Device> getRegistration(String uniqueId) {
 
-        return deviceService.findByUniqueId(registrationCommand.getUniqueId());
+        return deviceService.findByUniqueId(uniqueId);
     }
 }
