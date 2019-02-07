@@ -49,6 +49,11 @@ public class SensorController {
         this.convertMeasurementCommandToMeasurement = convertMeasurementCommandToMeasurement;
     }
 
+    /**
+     * Returns a list of all Sensors in the system
+     *
+     * @return  A JSON formatted List SensorCommand objects
+     */
     @GetMapping(value = {"sensors","sensors/"}, produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public List<SensorCommand> getAllSensors() {
@@ -60,6 +65,12 @@ public class SensorController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns a single sensor.
+     *
+     * @param id The id of the sensor.
+     * @return A JSON formatted SensorCommand object
+     */
     @GetMapping(value = "/sensor/{id}", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public SensorCommand getSensorById(@PathVariable Long id) {
@@ -70,6 +81,12 @@ public class SensorController {
         return convertSensorToSensorCommand.convert(foundSensors);
     }
 
+    /**
+     * Returns a list of all measurements for the given sensor.
+     *
+     * @param id  The id of the sensor.
+     * @return A JSON formatted List of MeasurementCommand objects
+     */
     @GetMapping(value = "/sensor/{id}/measurements", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public List<MeasurementCommand> getSensorMeasurements(@PathVariable Long id) {
@@ -85,6 +102,11 @@ public class SensorController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param id  The id of the sensor.
+     * @param newMeasurement A JSON formatted MeasurementCommand object in the request body
+     * @return A JSON formatted MeasurementCommand object
+     */
     @RequestMapping(value = "/sensor/{id}/measurement", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.CREATED)
     @Transactional

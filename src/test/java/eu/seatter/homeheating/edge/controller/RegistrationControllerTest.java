@@ -23,6 +23,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -110,9 +111,9 @@ public class RegistrationControllerTest {
         given(registrationService.getRegistration(anyString())).willReturn(Optional.of(device));
 
         //when
-        this.mockMvc.perform(post("/api/v1/registration/device")
-                            .contentType("text/plain;charset=UTF-8")
-                            .content("+4UKP+JdIfG6vvbYtmk9nL+bPFGEiJ11/159suwMso0="))
+        this.mockMvc.perform(get("/api/v1/registration/device")
+                                            .param("uniqueId", "%2B4UKP%2BJdIfG6vvbYtmk9nL%2BbPFGEiJ11%2F159suwMso0%3D"))
+
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(device.getName()))
                 .andExpect(jsonPath("$.registrationStatus").value("PENDINGAPPROVAL"));
@@ -121,17 +122,17 @@ public class RegistrationControllerTest {
     }
 
     @Test
-    public void whenGetRegistrationJSONInput_thenShouldReturnUnsupportedMediaTypeException() throws Exception {
+    public void whenGetRegistrationBADID_thenShouldReturnUnsupportedMediaTypeException() throws Exception {
         //given
         RegistrationCommand badrc = new RegistrationCommand(); //any incomplete RegistrationCommand is an exception.
 
         given(registrationService.getRegistration(anyString())).willReturn(Optional.of(device));
 
         //when
-        this.mockMvc.perform(post("/api/v1/registration/device")
-                                .contentType("application/json;charset=UTF-8")
+        this.mockMvc.perform(get("/api/v1/registration/device")
+                                .param("uniqueId", "BADID")
                                 )
-                .andExpect(status().isUnsupportedMediaType());
+                .andExpect(jsonPath("$.id").isEmpty());
 
         //then
         verify(registrationService,times(0)).newDevice(any(RegistrationCommand.class));

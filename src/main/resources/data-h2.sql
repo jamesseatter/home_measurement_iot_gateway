@@ -1,4 +1,4 @@
-INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus) VALUES (1,'pi3n1','+4UKP+JdIfG6vvbYtmk9nL+bPFGEiJ11/159suwMso0=','Raspberry','Raspbian', 'NOTREGISTERED')
+INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus) VALUES (1,'pi3n1','+4UKP+JdIfG6vvbYtmk9nL+bPFGEiJ11/159suwMso0=','Raspberry','Raspbian', 'PENDINGAPPROVAL')
 INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus) VALUES (2,'pi3n2','2345','Raspberry','Raspbian', 'PENDINGAPPROVAL')
 INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus, registrationcode) VALUES (3,'pi3n3','3456','Raspberry','Raspbian', 'REGISTERED', '29s756431s1441')
 INSERT INTO device (id, name, uniqueid,manufacturer, operatingsystem, registrationstatus, registrationcode) VALUES (4,'pi3n4','4567','Raspberry','Raspbian', 'REGISTERED', '29s756431s1442')

@@ -58,6 +58,10 @@ public class DeviceController {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping(value = "device/{id}")
     @ResponseStatus(HttpStatus.OK)
     public DeviceCommand getDeviceById(@PathVariable Long id) {
@@ -79,6 +83,10 @@ public class DeviceController {
         return converterDeviceToDeviceCommand.convert(foundDevice);
     }
 
+    /**
+     * @param uniqueid
+     * @return
+     */
     @GetMapping(value = {"device","device/"}, params = "uniqueid")
     @ResponseStatus(HttpStatus.OK)
     public DeviceCommand getDeviceByUniqueId(@RequestParam String uniqueid) {
@@ -90,6 +98,10 @@ public class DeviceController {
         return converterDeviceToDeviceCommand.convert(foundDevice);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping(value={"device/{id}/sensors","device/{id}/sensors/"})
     @ResponseStatus(HttpStatus.OK)
     public List<SensorCommand> getDeviceSensors(@PathVariable Long id) {
