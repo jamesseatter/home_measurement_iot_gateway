@@ -46,6 +46,9 @@ public class DeviceController {
         this.converterSensorToSensorCommand = converterSensorToSensorCommand;
     }
 
+    /**
+     * @return Return a JSON formatted List of DeviceCommand objects
+     */
     @GetMapping(value = {"devices","devices/"})
     @ResponseStatus(HttpStatus.OK)
     public List<DeviceCommand> getAllDevices() {
@@ -59,8 +62,8 @@ public class DeviceController {
     }
 
     /**
-     * @param id
-     * @return
+     * @param id The ID of the Device
+     * @return A JSON formatted DeviceCommand object
      */
     @GetMapping(value = "device/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -84,8 +87,8 @@ public class DeviceController {
     }
 
     /**
-     * @param uniqueid
-     * @return
+     * @param uniqueid The uniqueID of a Device.
+     * @return A JSON formatted DeviceCommand object.
      */
     @GetMapping(value = {"device","device/"}, params = "uniqueid")
     @ResponseStatus(HttpStatus.OK)
@@ -99,8 +102,8 @@ public class DeviceController {
     }
 
     /**
-     * @param id
-     * @return
+     * @param id The uniqueID of a Device.
+     * @return Return a JSON formatted List of SensorCommand objects
      */
     @GetMapping(value={"device/{id}/sensors","device/{id}/sensors/"})
     @ResponseStatus(HttpStatus.OK)

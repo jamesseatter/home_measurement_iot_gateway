@@ -11,7 +11,7 @@
 	<groupId>eu.seatter.homeheating</groupId>
 	<artifactId>edge</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-	<name>home_heating_iot_edge</name>
+	<name>edge</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -73,10 +73,40 @@
 	</dependencies>
 
 	<build>
+		<!--<finalName>edge</finalName>-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<!--<version>3.0.0</version>-->
+				<configuration>
+					<excludeDefaultDirectories>true</excludeDefaultDirectories>
+					<filesets>
+						<fileset>
+							<directory>target</directory>
+							<includes>
+								<include>**</include>
+							</includes>
+							<excludes>
+								<exclude>config</exclude>
+							</excludes>
+						</fileset>
+					</filesets>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -106,6 +136,29 @@
 					<!--Required to get circleCI working-->
 					<useSystemClassLoader>false</useSystemClassLoader>
 				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<!--<version>3.1.0</version>-->
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<!-- here the phase you need -->
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target/config</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/non-packaged-resources/config</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

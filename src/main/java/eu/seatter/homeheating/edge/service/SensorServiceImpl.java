@@ -9,9 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -93,4 +91,5 @@ public class SensorServiceImpl implements SensorService {
     public void deleteById(Long id) {
         sensorRepository.deleteById(id);
     }
+
 }

@@ -60,4 +60,6 @@ public class RegistrationController {
         Device device = registrationService.getRegistration(uniqueId).orElseGet(Device::new);
         return convertDeviceToRegistrationCommand.convert(device);
     }
+
+
 }

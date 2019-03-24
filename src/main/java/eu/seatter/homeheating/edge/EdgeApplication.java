@@ -6,11 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @Slf4j
-public class HomeHeatingIotEdgeApplication {
+public class EdgeApplication {
 
 	public static void main(String[] args) {
 		log.info("Application startup");
-		SpringApplication.run(HomeHeatingIotEdgeApplication.class, args);
+		SpringApplication.run(EdgeApplication.class, args);
 
 	}
 

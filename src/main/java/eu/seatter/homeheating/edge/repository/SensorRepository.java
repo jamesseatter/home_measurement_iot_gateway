@@ -18,11 +18,18 @@ import java.util.Set;
 public interface SensorRepository extends CrudRepository<Sensor, Long> {
 
     /**
-     * Finds device by using the device name as a search criteria.
-     * @param sensorId the unique ID of the sensor.
+     * Finds device by using the sensor ID as a search criteria.
+     * @param sensorId the ID of the sensor.
      * @return  A single sensor with the exact match of the ID provided.
      *          If no sensor is found, this method returns null.
      */
     Optional<Sensor> findBySensorId(String sensorId);
+
+    /**
+     * Finds all sensors by using the device as a search criteria.
+     * @param device the unique ID of the sensor.
+     * @return  A Set of sensors for the device.
+     *          If no sensor is found, this method returns null.
+     */
     Set<Sensor> findAllByDevice(Device device);
 }

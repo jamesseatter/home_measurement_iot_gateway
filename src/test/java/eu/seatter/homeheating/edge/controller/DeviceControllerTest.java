@@ -46,7 +46,7 @@ public class DeviceControllerTest {
     private DeviceService deviceService;
 
     @MockBean
-    SensorService sensorService;
+    private SensorService sensorService;
 
     @Test
     public void whenGetDeviceById_thenShouldReturnDeviceAsJSON() throws Exception {

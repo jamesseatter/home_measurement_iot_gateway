@@ -14,6 +14,7 @@ import eu.seatter.homeheating.edge.service.SensorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class SensorController {
      * @param id The id of the sensor.
      * @return A JSON formatted SensorCommand object
      */
-    @GetMapping(value = "/sensor/{id}", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "sensor/{id}", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public SensorCommand getSensorById(@PathVariable Long id) {
         log.debug("Entered getSensorById, id=" + id);
@@ -87,7 +88,7 @@ public class SensorController {
      * @param id  The id of the sensor.
      * @return A JSON formatted List of MeasurementCommand objects
      */
-    @GetMapping(value = "/sensor/{id}/measurements", produces = "application/json;charset=UTF-8")
+    @GetMapping(value = "sensor/{id}/measurements", produces = "application/json;charset=UTF-8")
     @ResponseStatus(HttpStatus.OK)
     public List<MeasurementCommand> getSensorMeasurements(@PathVariable Long id) {
         log.debug("Entered getSensorMeasurements, id=" + id);
@@ -100,6 +101,15 @@ public class SensorController {
                 .sorted()
                 .map(convertMeasurementToMeasurementCommand::convert)
                 .collect(Collectors.toList());
+    }
+
+    @PostMapping(value = "sensors/new", consumes = "application/json;charset=UTF-8", produces = "application/json;charset=UTF-8")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<SensorCommand> saveSensorList(@Validated @RequestBody List<SensorCommand> sensorCommandList) {
+        log.debug("Entered saveSensorList, sensor count : " + sensorCommandList.size());
+
+
+        return sensorCommandList;
     }
 
     /**
@@ -128,4 +138,5 @@ public class SensorController {
 
         return convertMeasurementToMeasurementCommand.convert(savedMeasurement);
     }
+
 }

@@ -1,5 +1,6 @@
 package eu.seatter.homeheating.edge.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -59,9 +60,11 @@ public class Sensor extends BaseEntity implements Comparable<Sensor> {
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "device_id", nullable = false)
     @ManyToOne
+    @JsonIgnore
     private Device device;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "sensor", orphanRemoval = true)
+    @JsonIgnore
     private Set<Measurement> measurements = new HashSet<>();
 
     @Override
