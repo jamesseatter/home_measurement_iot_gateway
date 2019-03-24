@@ -8,11 +8,11 @@
 		<version>2.1.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>eu.seatter.homeheating</groupId>
-	<artifactId>edge</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
-	<name>edge</name>
-	<description>Demo project for Spring Boot</description>
+	<groupId>eu.seatter.homemeasurement</groupId>
+	<artifactId>gateway</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+	<name>gateway</name>
+	<description>Home Measurement IOT Gateway</description>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -164,7 +164,7 @@
 	</build>
 
 	<scm>
-		<developerConnection>scm:git:https://github.com/jamesseatter/home_heating_iot_edge.git</developerConnection>
+		<developerConnection>scm:git:https://github.com/jamesseatter/home_measurement_iot_gateway.git</developerConnection>
 		<tag>HEAD</tag>
 	</scm>
 

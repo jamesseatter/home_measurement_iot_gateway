@@ -1,8 +1,8 @@
-# home_heating_iot_edge
+# home_measurement_iot_gateway
 
 [![CircleCI](https://circleci.com/gh/jamesseatter/home_heating_iot_edge.svg?style=svg)](https://circleci.com/gh/jamesseatter/home_heating_iot_edge)
 
-Home Heating IOT Edge
+Home Measurement IOT Gateway
 
 The project is focused on building a system to monitor the temperature of the water entering the house from a shared common heating source. That hot water is then distributed to taps and the underfloor heating system. The project will collect temperatures from strategic points to monitor water temperature and record the data for viewing within a web based front end.
 
