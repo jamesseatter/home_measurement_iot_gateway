@@ -13,7 +13,7 @@ This code covers the edge point that accepts data from the endpoint and stores i
 The code will also act as the REST gateway to the data as uses by the Web Clients and other data readers.
 
 **Code Goals**
-   * Receive data from 1 or more collecors using REST interfaces
+   * Receive data from 1 or more collectors using REST interfaces
    * Use authentication and roles to control access both devices and systems
    * Update collector configuration remotely
    * Store incoming data in a DB
@@ -21,4 +21,4 @@ The code will also act as the REST gateway to the data as uses by the Web Client
 
 **Code/hardware Components**
    * Raspberry Pi 3 B+
-   * Java 8 code base
+   * Java 10 code base
